@@ -84,8 +84,8 @@ class OutingPlanGenerator:
         recommendations = recommendation_result.get('recommendations', [])
 
         if not recommendations:
-            # CRITICAL FIX: No fake fallback stops
-            # If Google Places returns no results, raise an error
+            # CRITICAL: No places found at all
+            # Only fail if we have ZERO real places
             logger.error(
                 'Google Places returned no recommendations for location (%.6f, %.6f), vibe=%s',
                 latitude,
@@ -95,6 +95,16 @@ class OutingPlanGenerator:
             raise ValueError(
                 'Unable to generate itinerary: No places found in this area. '
                 'Please try a different location or adjust your preferences.'
+            )
+        
+        # RELAXED: Accept partial itineraries
+        # Even 2-3 real places is better than total failure
+        if len(recommendations) < 3:
+            logger.warning(
+                'Generated partial itinerary with only %d stops (location: %.6f, %.6f)',
+                len(recommendations),
+                latitude,
+                longitude,
             )
 
         # Convert recommendations to stops (all real Google Places data)

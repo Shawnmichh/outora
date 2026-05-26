@@ -35,8 +35,8 @@ from apps.planner.services.google_places import (
 logger = logging.getLogger(__name__)
 
 DEFAULT_MAX_RECOMMENDATIONS = 5  # Base recommendation count (will be scaled by duration)
-DEFAULT_MIN_RATING = 4.0
-DEFAULT_RESULTS_PER_QUERY = 10
+DEFAULT_MIN_RATING = 3.5  # RELAXED from 4.0 - accept more places
+DEFAULT_RESULTS_PER_QUERY = 20  # INCREASED from 10 - fetch more candidates
 
 # Duration-aware stop count scaling
 # Ensures itineraries have appropriate density based on outing length
@@ -474,13 +474,13 @@ class RecommendationEngine:
         """
         Get MINIMUM required stop count based on duration.
         
-        HARD REQUIREMENTS:
+        RELAXED REQUIREMENTS (prefer partial itineraries over total failure):
         - 1-2 hour: minimum 2 stops
-        - 3-4 hour: minimum 3 stops
-        - 5-6 hour: minimum 5 stops
-        - Full-day: minimum 7 stops
+        - 3-4 hour: minimum 2 stops (RELAXED from 3)
+        - 5-6 hour: minimum 3 stops (RELAXED from 5)
+        - Full-day: minimum 4 stops (RELAXED from 7)
         
-        Engine MUST NEVER return fewer stops than this (unless no places exist).
+        Philosophy: Returning 3 real places is MUCH better than "No places found"
         
         Returns:
             Minimum number of stops required
@@ -488,13 +488,13 @@ class RecommendationEngine:
         if duration_hours <= 2:
             return 2
         elif duration_hours <= 4:
-            return 3
+            return 2  # RELAXED from 3
         elif duration_hours <= 6:
-            return 5
+            return 3  # RELAXED from 5
         elif duration_hours <= 9:
-            return 7
+            return 4  # RELAXED from 7
         else:
-            return 7  # Full-day minimum
+            return 4  # RELAXED from 7
     
     def _calculate_stop_count(self, preferences: dict[str, Any]) -> int:
         """
@@ -1081,7 +1081,8 @@ class RecommendationEngine:
                 needed - len(additional_collected),
             )
             
-            # Use very broad generic keywords
+            # Use very broad generic keywords that match ANY valid place
+            # EXPANDED: Accept cafes, malls, parks, bookstores, etc.
             generic_keywords = [
                 'tourist attraction',
                 'point of interest',
@@ -1090,6 +1091,15 @@ class RecommendationEngine:
                 'entertainment',
                 'shopping center',
                 'landmark',
+                'cafe',  # ADDED: Cafes are valid places
+                'restaurant',  # ADDED: Restaurants are valid places
+                'mall',  # ADDED: Malls are valid places
+                'park',  # ADDED: Parks are valid places
+                'museum',  # ADDED: Museums are valid places
+                'bookstore',  # ADDED: Bookstores are valid places
+                'market',  # ADDED: Markets are valid places
+                'gallery',  # ADDED: Galleries are valid places
+                'store',  # ADDED: Stores are valid places
             ]
             
             for keyword in generic_keywords:
@@ -1803,7 +1813,17 @@ class RecommendationEngine:
         *,
         weather_context: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """Prefer highly rated places, then apply weather-aware weighting."""
+        """
+        Rank places by rating, but ACCEPT lower-rated and unrated places.
+        
+        RELAXED FILTERING:
+        - Prefer highly rated places (>= min_rating)
+        - But INCLUDE lower-rated places (they're still real places!)
+        - INCLUDE unrated places (many valid places lack ratings)
+        - Sort all by score, don't exclude based on rating alone
+        
+        Philosophy: A 3.5-star cafe is better than "No places found"
+        """
         rated = [
             s for s in stops
             if s.get('rating') is not None and s['rating'] >= self.min_rating
@@ -1814,10 +1834,14 @@ class RecommendationEngine:
             if s.get('rating') is not None and s['rating'] < self.min_rating
         ]
 
+        # Sort all groups by score
         rated.sort(key=lambda s: self._score_stop(s, weather_context), reverse=True)
+        unrated.sort(key=lambda s: self._score_stop(s, weather_context), reverse=True)
         below_min.sort(key=lambda s: self._score_stop(s, weather_context), reverse=True)
 
-        return rated + below_min + unrated
+        # RELAXED: Include all groups (don't exclude below_min or unrated)
+        # Priority: rated > unrated > below_min
+        return rated + unrated + below_min
 
     def _rank_by_rating(self, stops: list[dict[str, Any]]) -> list[dict[str, Any]]:
         return self._rank_stops(stops)
