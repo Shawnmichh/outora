@@ -319,8 +319,19 @@ async function geocodeStopName(geocoder, name, biasCenter) {
  * 4. Update DirectionsRenderer to work with new format
  */
 async function fetchDirections(resolvedStops, travelMode) {
-  if (!window.google?.maps?.DirectionsService) return null;
-  if (resolvedStops.length < 2) return null;
+  console.log('[ItineraryMap] 🗺️ fetchDirections called');
+  console.log('[ItineraryMap] resolvedStops count:', resolvedStops.length);
+  console.log('[ItineraryMap] travelMode:', travelMode);
+
+  if (!window.google?.maps?.DirectionsService) {
+    console.error('[ItineraryMap] ❌ DirectionsService not available');
+    return null;
+  }
+  
+  if (resolvedStops.length < 2) {
+    console.warn('[ItineraryMap] ⚠️ Not enough stops for directions (need ≥2):', resolvedStops.length);
+    return null;
+  }
 
   // Clamp to API limit: origin + up to 8 waypoints + destination = 10 points.
   const clamped =
@@ -339,9 +350,33 @@ async function fetchDirections(resolvedStops, travelMode) {
     stopover: true,
   }));
 
+  // Detailed logging of request parameters
+  console.log('[ItineraryMap] 📍 Directions Request:');
+  console.log('  Origin:', origin, `(${clamped[0].stop.name})`);
+  console.log('  Destination:', destination, `(${clamped[clamped.length - 1].stop.name})`);
+  console.log('  Waypoints count:', waypoints.length);
+  waypoints.forEach((wp, i) => {
+    console.log(`  Waypoint ${i + 1}:`, wp.location, `(${clamped[i + 1].stop.name})`);
+  });
+  console.log('  Travel mode:', travelMode);
+
+  // Validate coordinates
+  const invalidStops = [];
+  resolvedStops.forEach(({ stop, position }) => {
+    if (!isValidLatLng(position.lat, position.lng)) {
+      invalidStops.push({ name: stop.name, position });
+    }
+  });
+  
+  if (invalidStops.length > 0) {
+    console.error('[ItineraryMap] ❌ Invalid coordinates detected:', invalidStops);
+  }
+
   const service = new window.google.maps.DirectionsService();
 
   return new Promise((resolve) => {
+    const requestTime = Date.now();
+    
     service.route(
       {
         origin,
@@ -351,13 +386,56 @@ async function fetchDirections(resolvedStops, travelMode) {
         optimizeWaypoints: false, // preserve itinerary order
       },
       (result, status) => {
+        const responseTime = Date.now() - requestTime;
+        console.log(`[ItineraryMap] 📡 Directions API response (${responseTime}ms):`, status);
+        
         if (status === 'OK') {
+          console.log('[ItineraryMap] ✅ Directions received successfully');
+          console.log('  Routes count:', result.routes?.length);
+          console.log('  Legs count:', result.routes?.[0]?.legs?.length);
+          console.log('  Has overview_path:', !!result.routes?.[0]?.overview_path);
+          console.log('  Has overview_polyline:', !!result.routes?.[0]?.overview_polyline);
+          
+          // Log each leg details
+          result.routes?.[0]?.legs?.forEach((leg, i) => {
+            console.log(`  Leg ${i + 1}:`, {
+              distance: leg.distance?.text,
+              duration: leg.duration?.text,
+              steps: leg.steps?.length
+            });
+          });
+          
           resolve(result);
         } else {
-          // Only log non-trivial failures (avoid noise for expected errors)
-          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
-            console.warn('[ItineraryMap] Directions API status:', status);
+          // Log ALL failures with detailed information
+          console.error('[ItineraryMap] ❌ Directions API failed:', status);
+          
+          // Provide specific guidance based on status
+          switch (status) {
+            case 'ZERO_RESULTS':
+              console.error('  → No route found between these locations');
+              break;
+            case 'NOT_FOUND':
+              console.error('  → One or more locations could not be geocoded');
+              break;
+            case 'INVALID_REQUEST':
+              console.error('  → Invalid request parameters');
+              console.error('  → Check origin, destination, and waypoints format');
+              break;
+            case 'REQUEST_DENIED':
+              console.error('  → API key does not have Directions API enabled');
+              console.error('  → Check Google Cloud Console API restrictions');
+              break;
+            case 'OVER_QUERY_LIMIT':
+              console.error('  → API quota exceeded');
+              break;
+            case 'UNKNOWN_ERROR':
+              console.error('  → Server error, retry may succeed');
+              break;
+            default:
+              console.error('  → Unexpected status code');
           }
+          
           resolve(null);
         }
       },
@@ -570,34 +648,57 @@ export default function ItineraryMap({
     let cancelled = false;
 
     async function resolveCoordinates() {
+      console.log('[ItineraryMap] 🔍 Phase 1: Resolving coordinates for', stops.length, 'stops');
       setGeocoding(true);
       setDirectionsResult(null);
       setDirectionsError(false);
 
       if (!geocoderRef.current && window.google?.maps?.Geocoder) {
         geocoderRef.current = new window.google.maps.Geocoder();
+        console.log('[ItineraryMap] Geocoder initialized');
       }
 
       const withCoords = await Promise.all(
-        stops.map(async (stop) => {
+        stops.map(async (stop, index) => {
+          console.log(`[ItineraryMap] Resolving stop ${index + 1}/${stops.length}: ${stop.name}`);
+          
           // Priority 1: direct Google Places location.
           const direct = latLngFromStopLocation(stop.location);
-          if (direct) return { stop, position: direct, source: 'places' };
+          if (direct) {
+            console.log(`  ✅ Using Places API coordinates:`, direct);
+            return { stop, position: direct, source: 'places' };
+          }
 
           // Priority 2: geocode the stop name.
+          console.log(`  🔎 Geocoding stop name...`);
           const geocoded = await geocodeStopName(geocoderRef.current, stop.name, biasCenter);
-          if (geocoded) return { stop, position: geocoded, source: 'geocoded' };
+          if (geocoded) {
+            console.log(`  ✅ Geocoded coordinates:`, geocoded);
+            return { stop, position: geocoded, source: 'geocoded' };
+          }
 
           // Priority 3: fallback to plan-level origin.
-          if (biasCenter) return { stop, position: biasCenter, source: 'fallback' };
+          if (biasCenter) {
+            console.log(`  ⚠️ Using fallback (plan location):`, biasCenter);
+            return { stop, position: biasCenter, source: 'fallback' };
+          }
 
+          console.error(`  ❌ Could not resolve coordinates for: ${stop.name}`);
           return null; // cannot resolve → omit from map
         }),
       );
 
       if (cancelled) return;
 
-      setResolvedStops(withCoords.filter(Boolean));
+      const resolved = withCoords.filter(Boolean);
+      console.log('[ItineraryMap] ✅ Coordinate resolution complete:', resolved.length, 'of', stops.length, 'stops resolved');
+      
+      // Log summary by source
+      const sources = { places: 0, geocoded: 0, fallback: 0 };
+      resolved.forEach(({ source }) => sources[source]++);
+      console.log('[ItineraryMap] Resolution sources:', sources);
+
+      setResolvedStops(resolved);
       setGeocoding(false);
     }
 
@@ -621,6 +722,7 @@ export default function ItineraryMap({
     let cancelled = false;
 
     async function loadDirections() {
+      console.log('[ItineraryMap] 🚗 Phase 2: Fetching directions');
       setDirectionsLoading(true);
       setDirectionsError(false);
 
@@ -629,9 +731,11 @@ export default function ItineraryMap({
       if (cancelled) return;
 
       if (result) {
+        console.log('[ItineraryMap] ✅ Directions loaded successfully, setting state');
         setDirectionsResult(result);
         setDirectionsError(false);
       } else {
+        console.warn('[ItineraryMap] ⚠️ Directions failed, entering fallback mode (markers only)');
         setDirectionsResult(null);
         setDirectionsError(true); // graceful fallback
       }
@@ -815,10 +919,20 @@ export default function ItineraryMap({
           >
             {/* Route polyline — only when Directions succeeded */}
             {hasRoute && (
-              <DirectionsRenderer
-                directions={directionsResult}
-                options={DIRECTIONS_RENDERER_OPTIONS}
-              />
+              <>
+                {console.log('[ItineraryMap] 🎨 Rendering DirectionsRenderer with result:', directionsResult)}
+                <DirectionsRenderer
+                  directions={directionsResult}
+                  options={DIRECTIONS_RENDERER_OPTIONS}
+                  onLoad={(renderer) => {
+                    console.log('[ItineraryMap] ✅ DirectionsRenderer loaded:', renderer);
+                    console.log('[ItineraryMap] Polyline options:', DIRECTIONS_RENDERER_OPTIONS.polylineOptions);
+                  }}
+                  onDirectionsChanged={() => {
+                    console.log('[ItineraryMap] 📍 DirectionsRenderer: directions changed');
+                  }}
+                />
+              </>
             )}
 
             {/* Custom numbered markers — always rendered above the polyline */}
