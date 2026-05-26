@@ -252,7 +252,7 @@ This is a private project. For questions or collaboration inquiries, please cont
 
 ## 🔗 Links
 
-- **Live Demo**: [outora.app](https://outora.app) *(if deployed)*
+- **Live Demo**: [outora.app](https://outora.vercel.app/) 
 - **API Documentation**: Available at `/api/docs` when backend is running
 - **Design System**: See `DESIGN_SYSTEM.md`
 - **Brand Guide**: See `OUTORA_BRAND_GUIDE.md`
