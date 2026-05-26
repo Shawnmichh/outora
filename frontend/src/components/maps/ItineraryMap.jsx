@@ -281,9 +281,20 @@ async function geocodeStopName(geocoder, name, biasCenter) {
     const timer = setTimeout(() => resolve(null), GEOCODE_TIMEOUT_MS);
 
     const params = { address: name };
+    
+    // FIXED: Geocoder doesn't support 'radius' parameter
+    // Use 'bounds' for location biasing instead
     if (biasCenter) {
-      params.location = biasCenter;
-      params.radius = 50000; // 50 km soft bias
+      // Create a bounding box around the bias center (approximately 50km radius)
+      const latOffset = 0.45; // ~50km at equator
+      const lngOffset = 0.45;
+      
+      params.bounds = {
+        north: biasCenter.lat + latOffset,
+        south: biasCenter.lat - latOffset,
+        east: biasCenter.lng + lngOffset,
+        west: biasCenter.lng - lngOffset,
+      };
     }
 
     geocoder.geocode(params, (results, status) => {

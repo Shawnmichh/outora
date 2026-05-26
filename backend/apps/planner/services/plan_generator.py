@@ -34,36 +34,10 @@ FOOD_STOP_DURATION_MINUTES = 75
 class OutingPlanGenerator:
     """Builds an itinerary from questionnaire preferences and place recommendations."""
 
-    FALLBACK_STOP_TEMPLATES: dict[str, list[tuple[str, str, str]]] = {
-        'tourist': [
-            ('Historic Old Town Walk', 'culture', 'Guided stroll through iconic landmarks.'),
-            ('City Museum', 'culture', 'Highlights tour tailored to your interests.'),
-            ('Riverside Promenade', 'explore', 'Scenic views and photo spots.'),
-        ],
-        'localite': [
-            ('Neighborhood Market', 'food', 'Local vendors and seasonal produce.'),
-            ('Hidden Courtyard Café', 'food', 'A spot only regulars usually know.'),
-            ('Street Art Alley', 'explore', 'Murals and indie galleries off the main path.'),
-        ],
-    }
-
-    FALLBACK_VIBE_STOP: dict[str, tuple[str, str, str]] = {
-        'relaxed': ('Botanical Garden', 'nature', 'Unhurried walk among green spaces.'),
-        'adventurous': ('Urban Adventure Park', 'activity', 'Climbing and obstacle courses.'),
-        'cultural': ('Art District Gallery', 'culture', 'Rotating exhibits from local artists.'),
-        'romantic': ('Sunset Viewpoint', 'explore', 'Panoramic views at golden hour.'),
-        'family': ('Interactive Science Center', 'activity', 'Hands-on exhibits for all ages.'),
-        'nightlife': ('Live Music Venue', 'nightlife', 'Local band and craft drinks.'),
-    }
-
-    FALLBACK_FOOD_STOP: dict[str, tuple[str, str, str]] = {
-        'vegetarian': ('Garden Bistro', 'food', 'Plant-forward seasonal menu.'),
-        'vegan': ('Green Plate Kitchen', 'food', 'Fully vegan comfort dishes.'),
-        'halal': ('Spice Route Kitchen', 'food', 'Halal-certified regional cuisine.'),
-        'kosher': ('Heritage Deli', 'food', 'Kosher-friendly lunch options.'),
-        'gluten_free': ('Pure Grain Café', 'food', 'Dedicated gluten-free prep area.'),
-        'any': ('Local Favorite Eatery', 'food', 'Highly rated spot for your budget.'),
-    }
+    # REMOVED: Fake fallback stop templates
+    # These generated fake AI place names that couldn't be geocoded.
+    # The recommendation engine should ALWAYS return real Google Places data.
+    # If Google Places fails, the system should return an error, not fake places.
 
     def __init__(
         self,
@@ -88,6 +62,9 @@ class OutingPlanGenerator:
         """
         Return a structured outing plan dict from validated preferences.
         
+        CRITICAL: This method ONLY returns real Google Places data.
+        If Google Places fails, an error is raised instead of returning fake places.
+        
         ENHANCED with:
         - Transport-aware routing and search radius
         - Dynamic activity duration intelligence
@@ -106,16 +83,23 @@ class OutingPlanGenerator:
         )
         recommendations = recommendation_result.get('recommendations', [])
 
-        if recommendations:
-            raw_stops = self._stops_from_recommendations(recommendations, preferences)
-            generated_by = 'google_places'
-        else:
-            logger.info(
-                'No place recommendations returned; using fallback itinerary for vibe=%s',
+        if not recommendations:
+            # CRITICAL FIX: No fake fallback stops
+            # If Google Places returns no results, raise an error
+            logger.error(
+                'Google Places returned no recommendations for location (%.6f, %.6f), vibe=%s',
+                latitude,
+                longitude,
                 preferences.get('outing_vibe'),
             )
-            raw_stops = self._build_fallback_stops(preferences)
-            generated_by = 'fallback'
+            raise ValueError(
+                'Unable to generate itinerary: No places found in this area. '
+                'Please try a different location or adjust your preferences.'
+            )
+
+        # Convert recommendations to stops (all real Google Places data)
+        raw_stops = self._stops_from_recommendations(recommendations, preferences)
+        generated_by = 'google_places'
 
         # Apply AI optimization (currently pass-through)
         raw_stops = self._apply_ai_optimization(raw_stops, preferences)
@@ -197,6 +181,9 @@ class OutingPlanGenerator:
         """
         Convert recommendations to stops with intelligent duration estimation.
         
+        CRITICAL: Preserves exact Google Places data (name, coordinates, place_id).
+        Does NOT regenerate or modify place names with AI.
+        
         ENHANCED: Uses ActivityDurationService for realistic durations.
         """
         stops = []
@@ -207,18 +194,67 @@ class OutingPlanGenerator:
             # Use intelligent duration estimation
             duration_minutes = self.activity_duration_service.estimate_duration(rec, preferences)
             
-            stops.append(
-                {
-                    'name': rec['name'],
-                    'category': category,
-                    'description': self._description_from_recommendation(rec),
-                    'duration_minutes': duration_minutes,
-                    'address': rec.get('address', ''),
-                    'rating': rec.get('rating'),
-                    'location': rec.get('location'),
-                    'types': rec.get('types', []),  # Preserve types for duration estimation
-                }
-            )
+            # CRITICAL: Preserve exact Google Places data
+            stop = {
+                'name': rec['name'],  # EXACT Google Places name, never modified
+                'category': category,
+                'description': self._description_from_recommendation(rec),
+                'duration_minutes': duration_minutes,
+                'address': rec.get('address', ''),
+                'rating': rec.get('rating'),
+                'location': rec.get('location'),  # EXACT Google Places coordinates
+                'types': rec.get('types', []),  # Preserve types for duration estimation
+            }
+            
+            # Validate that we have real coordinates
+            if not stop.get('location') or not isinstance(stop['location'], dict):
+                logger.warning(
+                    'Stop "%s" missing location data, skipping',
+                    stop['name'],
+                )
+                continue
+            
+            lat = stop['location'].get('latitude')
+            lng = stop['location'].get('longitude')
+            
+            if lat is None or lng is None:
+                logger.warning(
+                    'Stop "%s" has invalid coordinates (lat=%s, lng=%s), skipping',
+                    stop['name'],
+                    lat,
+                    lng,
+                )
+                continue
+            
+            # Validate coordinate ranges
+            try:
+                lat_float = float(lat)
+                lng_float = float(lng)
+                
+                if not (-90 <= lat_float <= 90 and -180 <= lng_float <= 180):
+                    logger.warning(
+                        'Stop "%s" has out-of-range coordinates (lat=%s, lng=%s), skipping',
+                        stop['name'],
+                        lat_float,
+                        lng_float,
+                    )
+                    continue
+            except (TypeError, ValueError):
+                logger.warning(
+                    'Stop "%s" has non-numeric coordinates (lat=%s, lng=%s), skipping',
+                    stop['name'],
+                    lat,
+                    lng,
+                )
+                continue
+            
+            stops.append(stop)
+
+        logger.info(
+            'Converted %d recommendations to %d valid stops with coordinates',
+            len(recommendations),
+            len(stops),
+        )
 
         return stops
 
@@ -235,34 +271,9 @@ class OutingPlanGenerator:
             parts.append(f'Matched for "{keyword}".')
         return ' '.join(parts) if parts else 'Recommended stop for your outing.'
 
-    def _build_fallback_stops(self, preferences: dict[str, Any]) -> list[dict[str, Any]]:
-        """Static itinerary used when Google Places returns no results."""
-        user_type = preferences.get('user_type', 'tourist')
-        templates = list(
-            self.FALLBACK_STOP_TEMPLATES.get(
-                user_type,
-                self.FALLBACK_STOP_TEMPLATES['tourist'],
-            )
-        )
-
-        vibe_stop = self.FALLBACK_VIBE_STOP.get(preferences.get('outing_vibe', ''))
-        if vibe_stop:
-            templates.insert(1, vibe_stop)
-
-        food_pref = preferences.get('food_preference', '')
-        if food_pref and food_pref != 'no_food':
-            food_stop = self.FALLBACK_FOOD_STOP.get(food_pref, self.FALLBACK_FOOD_STOP['any'])
-            templates.append(food_stop)
-
-        return [
-            {
-                'name': name,
-                'category': category,
-                'description': description,
-                'duration_minutes': self._duration_for_category(category),
-            }
-            for name, category, description in templates[:5]
-        ]
+    # REMOVED: _build_fallback_stops method
+    # Fake fallback stops are no longer used.
+    # The system now raises an error if Google Places returns no results.
 
     def _apply_ai_optimization(
         self,
