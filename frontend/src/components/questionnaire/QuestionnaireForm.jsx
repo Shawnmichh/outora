@@ -81,11 +81,30 @@ function QuestionnaireForm() {
       saveGeneratedPlan(generatedPlan);
       navigate(ROUTES.RESULTS, { state: { generatedPlan } });
     } catch (error) {
-      const message =
-        error instanceof ApiError
-          ? error.message
-          : 'Something went wrong. Please try again.';
+      // Enhanced error handling with user-friendly messages
+      let message = 'Something went wrong. Please try again.';
+      
+      if (error instanceof ApiError) {
+        // Use the backend's error message directly (already user-friendly)
+        message = error.message;
+        
+        // Add context-specific suggestions based on error type
+        if (error.status === 422) {
+          // Unprocessable entity - likely no places found
+          if (error.details?.error === 'generation_failed') {
+            message = error.message + '\n\nSuggestions:\n• Try a different location\n• Adjust your time preferences\n• Change your vibe or interests';
+          } else if (error.details?.error === 'places_api_error') {
+            message = 'Unable to fetch places from Google. Please try again in a few moments.';
+          }
+        } else if (error.status === 500) {
+          message = 'A server error occurred. Our team has been notified. Please try again later.';
+        }
+      }
+      
       setApiError(message);
+      
+      // Scroll to top to show error message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsLoading(false);
     }

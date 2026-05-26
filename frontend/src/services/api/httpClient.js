@@ -14,11 +14,19 @@ function parseErrorMessage(payload, status) {
     return `Request failed with status ${status}.`;
   }
 
+  // NEW: Handle structured error responses from backend
+  if (payload.success === false && payload.message) {
+    return payload.message;
+  }
+
+  // Handle DRF detail field
   if (typeof payload.detail === 'string') {
     return payload.detail;
   }
 
+  // Handle field validation errors
   const fieldMessages = Object.entries(payload)
+    .filter(([field]) => field !== 'success' && field !== 'error' && field !== 'details')
     .map(([field, errors]) => {
       const text = Array.isArray(errors) ? errors.join(' ') : String(errors);
       return `${field}: ${text}`;

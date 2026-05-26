@@ -57,19 +57,120 @@ class GeneratePlanView(APIView):
     Generate an outing plan from questionnaire preferences.
 
     POST /api/v1/planner/generate-plan/
+    
+    Returns:
+        201: Successfully generated itinerary
+        400: Invalid input data
+        422: Unable to generate itinerary (no places found, validation failed, etc.)
+        500: Unexpected server error
     """
 
     authentication_classes = []
     permission_classes = []
 
     def post(self, request):
+        import logging
+        from apps.planner.services.google_places import GooglePlacesServiceError
+        
+        logger = logging.getLogger(__name__)
+        
+        # Validate input
         input_serializer = QuestionnaireInputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
+        
+        preferences = input_serializer.validated_data
+        
+        # Log generation attempt
+        logger.info(
+            'Generating itinerary: location=(%.6f, %.6f), vibe=%s, user_type=%s, duration=%s-%s',
+            preferences.get('latitude', 0),
+            preferences.get('longitude', 0),
+            preferences.get('outing_vibe', 'unknown'),
+            preferences.get('user_type', 'unknown'),
+            preferences.get('start_time', 'unknown'),
+            preferences.get('end_time', 'unknown'),
+        )
 
-        plan = OutingPlanGenerator().generate(input_serializer.validated_data)
-
-        output_serializer = OutingPlanSerializer(plan)
-        return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+        try:
+            # Generate plan
+            plan = OutingPlanGenerator().generate(preferences)
+            
+            # Log success
+            logger.info(
+                'Itinerary generated successfully: %d stops, generated_by=%s',
+                len(plan.get('stops', [])),
+                plan.get('meta', {}).get('generated_by', 'unknown'),
+            )
+            
+            output_serializer = OutingPlanSerializer(plan)
+            return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+            
+        except ValueError as e:
+            # Expected failure: No places found, validation failed, etc.
+            logger.warning(
+                'Itinerary generation failed (ValueError): %s | location=(%.6f, %.6f), vibe=%s',
+                str(e),
+                preferences.get('latitude', 0),
+                preferences.get('longitude', 0),
+                preferences.get('outing_vibe', 'unknown'),
+            )
+            
+            return Response(
+                {
+                    'success': False,
+                    'error': 'generation_failed',
+                    'message': str(e),
+                    'details': {
+                        'reason': 'no_places_found',
+                        'suggestion': 'Try adjusting your location, preferences, or search criteria.',
+                    },
+                },
+                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
+            
+        except GooglePlacesServiceError as e:
+            # Google Places API error
+            logger.error(
+                'Google Places API error: %s | location=(%.6f, %.6f)',
+                str(e),
+                preferences.get('latitude', 0),
+                preferences.get('longitude', 0),
+            )
+            
+            return Response(
+                {
+                    'success': False,
+                    'error': 'places_api_error',
+                    'message': 'Unable to fetch places from Google Places API.',
+                    'details': {
+                        'reason': 'api_error',
+                        'suggestion': 'Please try again in a few moments. If the problem persists, contact support.',
+                    },
+                },
+                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
+            
+        except Exception as e:
+            # Unexpected error
+            logger.exception(
+                'Unexpected error during itinerary generation: %s | location=(%.6f, %.6f)',
+                str(e),
+                preferences.get('latitude', 0),
+                preferences.get('longitude', 0),
+            )
+            
+            return Response(
+                {
+                    'success': False,
+                    'error': 'internal_error',
+                    'message': 'An unexpected error occurred while generating your itinerary.',
+                    'details': {
+                        'reason': 'server_error',
+                        'suggestion': 'Please try again. If the problem persists, contact support.',
+                    },
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class RegisterView(APIView):

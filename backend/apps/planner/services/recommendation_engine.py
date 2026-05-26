@@ -281,6 +281,36 @@ class RecommendationEngine:
                 duration_hours,
             )
         
+        # CRITICAL: Log when returning empty recommendations
+        if len(recommendations) == 0:
+            logger.error(
+                '=== EMPTY RECOMMENDATIONS ===\n'
+                'Location: (%.6f, %.6f)\n'
+                'Vibe: %s, User: %s, Duration: %.1fh\n'
+                'Search radius: %dm\n'
+                'Queries attempted: %d\n'
+                'Total collected: %d\n'
+                'After deduplication: %d\n'
+                'After balancing: %d\n'
+                'After ranking: %d\n'
+                'After validation: %d\n'
+                'Errors: %s\n'
+                'This will cause plan generation to fail.',
+                latitude,
+                longitude,
+                vibe,
+                user_type,
+                duration_hours,
+                search_radius,
+                len(queries_attempted),
+                len(all_collected),
+                len(unique_places),
+                len(balanced),
+                len(ranked),
+                len(validated_all),
+                errors,
+            )
+        
         # Assign order
         for index, stop in enumerate(recommendations, start=1):
             stop['order'] = index
