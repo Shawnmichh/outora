@@ -36,7 +36,10 @@ JWT_SECRET_KEY=replace-with-a-long-random-jwt-secret
 JWT_ACCESS_TOKEN_MINUTES=60
 JWT_COOKIE_NAME=outing_access_token
 JWT_COOKIE_SECURE=True
-JWT_COOKIE_SAMESITE=Lax
+JWT_COOKIE_SAMESITE=None
+
+DJANGO_SESSION_COOKIE_SAMESITE=None
+DJANGO_CSRF_COOKIE_SAMESITE=None
 
 GOOGLE_MAPS_API_KEY=your-google-server-key
 GEMINI_API_KEY=your-gemini-api-key
@@ -58,6 +61,9 @@ POSTGRES_SSLMODE=require
 Notes:
 
 - `DATABASE_URL` is preferred for Render PostgreSQL.
+- **Cross-Site Authentication:** For Vercel frontend + Render backend, you **must** set `JWT_COOKIE_SAMESITE=None`, `DJANGO_SESSION_COOKIE_SAMESITE=None`, and `DJANGO_CSRF_COOKIE_SAMESITE=None` to allow cookies in cross-origin requests. The `Secure` flag must be `True` (HTTPS required).
+- The frontend automatically sends `credentials: 'include'` in all API requests.
+- The backend has `CORS_ALLOW_CREDENTIALS=True` configured to accept credentialed requests.
 - Local development still falls back to `backend/db.sqlite3` when `DATABASE_URL` is absent.
 - `build.sh` runs `collectstatic` and `migrate`.
 - Static files are served by WhiteNoise.

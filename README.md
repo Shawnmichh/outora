@@ -106,6 +106,11 @@ DATABASE_URL=postgres://user:password@localhost:5432/outora
 JWT_SECRET_KEY=your_jwt_secret
 JWT_ACCESS_TOKEN_MINUTES=60
 
+# For production cross-site auth (Vercel + Render), set:
+# JWT_COOKIE_SAMESITE=None
+# DJANGO_SESSION_COOKIE_SAMESITE=None
+# DJANGO_CSRF_COOKIE_SAMESITE=None
+
 # APIs
 GOOGLE_MAPS_API_KEY=your_google_maps_server_key
 GEMINI_API_KEY=your_gemini_api_key
@@ -138,6 +143,13 @@ CSRF_TRUSTED_ORIGINS=http://localhost:5173
 5. Add environment variables (see `.env.example`)
 6. Attach PostgreSQL database
 7. Set `DJANGO_SETTINGS_MODULE=config.settings.production`
+
+**Important for Cross-Site Auth:**
+- Set `JWT_COOKIE_SAMESITE=None`
+- Set `DJANGO_SESSION_COOKIE_SAMESITE=None`
+- Set `DJANGO_CSRF_COOKIE_SAMESITE=None`
+
+These settings allow cookies to work between Vercel and Render domains.
 
 ---
 

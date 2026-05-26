@@ -27,6 +27,8 @@ JWT_ACCESS_TOKEN_LIFETIME = timedelta(
 )
 JWT_COOKIE_NAME = os.environ.get('JWT_COOKIE_NAME', 'outing_access_token')
 JWT_COOKIE_SECURE = os.environ.get('JWT_COOKIE_SECURE', 'False').lower() == 'true'
+# For cross-site authentication (Vercel + Render), use SameSite=None in production
+# Local development can use 'Lax' (default)
 JWT_COOKIE_SAMESITE = os.environ.get('JWT_COOKIE_SAMESITE', 'Lax')
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'true'
