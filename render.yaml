@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ai-outing-planner-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: "bash build.sh"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "True"
+      - key: JWT_COOKIE_SECURE
+        value: "True"
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-outing-planner-db
+          property: connectionString
+
+databases:
+  - name: ai-outing-planner-db
+    plan: free

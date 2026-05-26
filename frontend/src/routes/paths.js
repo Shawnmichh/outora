@@ -1,0 +1,15 @@
+export const ROUTES = {
+  HOME: '/',
+  TOURIST: '/tourist',
+  LOCALITE: '/localite',
+  QUESTIONNAIRE: '/questionnaire',
+  RESULTS: '/results',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  MY_TRIPS: '/my-trips',
+  SHARED_TRIP: '/shared/:shareId',
+  ABOUT: '/about',
+  CONTACT: '/contact',
+  PRIVACY: '/privacy',
+  TERMS: '/terms',
+};

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Mountain peaks (top) with gradient from emerald to teal -->
+  <path d="M100 40 L130 75 L145 60 L160 85 L100 40 Z" fill="url(#mountain1)"/>
+  <path d="M100 40 L70 75 L55 60 L40 85 L100 40 Z" fill="url(#mountain2)"/>
+  
+  <!-- Flowing waves (middle-bottom) with cyan/blue gradients -->
+  <path d="M30 90 Q50 85 70 90 T110 90 Q130 85 150 90 T170 90 L170 130 Q150 125 130 130 T90 130 Q70 125 50 130 T30 130 Z" fill="url(#wave1)" opacity="0.85"/>
+  <path d="M35 100 Q55 95 75 100 T115 100 Q135 95 155 100 T175 100 L175 140 Q155 135 135 140 T95 140 Q75 135 55 140 T35 140 Z" fill="url(#wave2)" opacity="0.7"/>
+  
+  <!-- Central circle with cyan gradient -->
+  <circle cx="100" cy="115" r="18" fill="url(#center)"/>
+  
+  <!-- Gradients matching the uploaded logo colors -->
+  <defs>
+    <linearGradient id="mountain1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d9488;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mountain2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d9488;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0891b2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="center" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#67e8f9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
