@@ -43,7 +43,6 @@ MEAL_PREFERENCE_CHOICES = (
     'no_meals',
 )
 
-<<<<<<< HEAD
 # Movie/entertainment preferences (optional)
 # Determines if movie theaters should be included in recommendations
 MOVIE_PREFERENCE_CHOICES = (
@@ -52,8 +51,6 @@ MOVIE_PREFERENCE_CHOICES = (
     'maybe',
 )
 
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 # Time-of-day meal windows (24-hour format)
 # Used to determine when specific meal types are contextually appropriate
 MEAL_TIME_WINDOWS = {
@@ -95,7 +92,6 @@ OUTING_VIBE_SEARCH_KEYWORDS = {
         'go kart racing',
     ],
     'romantic': [
-<<<<<<< HEAD
         'rooftop lounge',
         'wine bar',
         'dessert shop',
@@ -106,18 +102,6 @@ OUTING_VIBE_SEARCH_KEYWORDS = {
         'jazz club',
         'fine dining',
         'promenade',
-=======
-        'scenic viewpoint',
-        'rooftop lounge',
-        'sunset spot',
-        'waterfront',
-        'botanical garden',
-        'observation deck',
-        'romantic walk',
-        'scenic promenade',
-        'garden',
-        'pier',
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     ],
     'adventurous': [
         'adventure park',
@@ -242,11 +226,8 @@ SHOPPING_KEYWORDS = [
 # STRONGLY EXPANDED activity keywords for entertainment-focused itineraries.
 # Prioritizes gaming, entertainment, and active experiences over dining.
 ACTIVITY_KEYWORDS = [
-<<<<<<< HEAD
     'movie theater',  # ADDED: Movie theaters for entertainment
     'cinema',  # ADDED: Alternative term for movie theaters
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     'entertainment venue',
     'activity center',
     'sports facility',
@@ -331,10 +312,7 @@ CAMEL_CASE_FIELD_ALIASES = {
     'outingVibe': 'outing_vibe',
     'foodPreference': 'food_preference',
     'mealPreferences': 'meal_preferences',  # NEW: multi-select meal timing
-<<<<<<< HEAD
     'moviePreference': 'movie_preference',  # NEW: movie/entertainment preference
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     'startTime': 'start_time',
     'endTime': 'end_time',
     'latitude': 'latitude',

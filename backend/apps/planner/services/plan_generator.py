@@ -22,10 +22,7 @@ from apps.planner.services.currency_service import CurrencyService
 from apps.planner.services.recommendation_engine import RecommendationEngine
 from apps.planner.services.transport_routing_service import TransportRoutingService
 from apps.planner.services.weather_service import WeatherService
-<<<<<<< HEAD
 from apps.planner.services.movie_intelligence_service import MovieIntelligenceService
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
 logger = logging.getLogger(__name__)
 
@@ -50,10 +47,7 @@ class OutingPlanGenerator:
         weather_service: WeatherService | None = None,
         activity_duration_service: ActivityDurationService | None = None,
         transport_routing_service: TransportRoutingService | None = None,
-<<<<<<< HEAD
         movie_intelligence_service: MovieIntelligenceService | None = None,
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         *,
         default_latitude: float = DEFAULT_PLANNER_LATITUDE,
         default_longitude: float = DEFAULT_PLANNER_LONGITUDE,
@@ -63,10 +57,7 @@ class OutingPlanGenerator:
         self.weather_service = weather_service or WeatherService()
         self.activity_duration_service = activity_duration_service or ActivityDurationService()
         self.transport_routing_service = transport_routing_service or TransportRoutingService()
-<<<<<<< HEAD
         self.movie_intelligence = movie_intelligence_service or MovieIntelligenceService()
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         self.default_latitude = default_latitude
         self.default_longitude = default_longitude
 
@@ -207,10 +198,7 @@ class OutingPlanGenerator:
         Does NOT regenerate or modify place names with AI.
         
         ENHANCED: Uses ActivityDurationService for realistic durations.
-<<<<<<< HEAD
         ENHANCED: Adds movie intelligence for theater recommendations.
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         """
         stops = []
 
@@ -232,7 +220,6 @@ class OutingPlanGenerator:
                 'types': rec.get('types', []),  # Preserve types for duration estimation
             }
             
-<<<<<<< HEAD
             # ENHANCE: Add movie intelligence for theaters
             if rec.get('is_movie_theater'):
                 logger.info('Enhancing movie theater: %s', stop['name'])
@@ -243,8 +230,6 @@ class OutingPlanGenerator:
                 except Exception as exc:
                     logger.warning('Failed to enhance theater with movies: %s', exc)
             
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             # Validate that we have real coordinates
             if not stop.get('location') or not isinstance(stop['location'], dict):
                 logger.warning(
@@ -320,7 +305,6 @@ class OutingPlanGenerator:
         preferences: dict[str, Any],
     ) -> list[dict[str, Any]]:
         """
-<<<<<<< HEAD
         Intelligently reorder stops based on category and preferences.
         """
         if not stops:
@@ -381,13 +365,6 @@ class OutingPlanGenerator:
             stop['order'] = i
             
         return optimized
-=======
-        Hook for future AI reordering, pruning, or enrichment.
-
-        Currently returns stops unchanged.
-        """
-        return stops
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     def _schedule_stops(
         self,

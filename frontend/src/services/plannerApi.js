@@ -17,10 +17,7 @@ export function mapQuestionnaireToApi(formData, coordinates = null) {
     outingVibe: formData.outingVibe,
     foodPreference: formData.foodPreference,
     mealPreferences: formData.mealPreferences || [],  // NEW: Multi-select meal timing
-<<<<<<< HEAD
     moviePreference: formData.moviePreference || 'maybe',  // NEW: Movie/entertainment preference
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     startTime: formData.startTime,
     endTime: formData.endTime,
   };

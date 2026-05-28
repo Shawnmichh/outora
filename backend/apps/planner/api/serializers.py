@@ -7,19 +7,13 @@ from apps.planner.constants import (
     CAMEL_CASE_FIELD_ALIASES,
     FOOD_PREFERENCE_CHOICES,
     MEAL_PREFERENCE_CHOICES,
-<<<<<<< HEAD
     MOVIE_PREFERENCE_CHOICES,
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     OUTING_VIBE_CHOICES,
     TRANSPORT_MODE_CHOICES,
     USER_TYPE_CHOICES,
 )
 from apps.planner.models import SavedTrip
-<<<<<<< HEAD
 from apps.planner.models import Profile
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
 
 class CamelCaseMixin:
@@ -54,7 +48,6 @@ class QuestionnaireInputSerializer(CamelCaseMixin, serializers.Serializer):
         allow_empty=True,
     )
     
-<<<<<<< HEAD
     # NEW: Movie/entertainment preference (yes, no, maybe)
     # Determines if movie theaters should be included in recommendations
     movie_preference = serializers.ChoiceField(
@@ -63,8 +56,6 @@ class QuestionnaireInputSerializer(CamelCaseMixin, serializers.Serializer):
         default='maybe',
     )
     
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     start_time = serializers.RegexField(
         regex=r'^([01]\d|2[0-3]):[0-5]\d$',
         required=False,
@@ -96,15 +87,12 @@ class QuestionnaireInputSerializer(CamelCaseMixin, serializers.Serializer):
             return ['no_meals']
         
         return unique
-<<<<<<< HEAD
     
     def validate_movie_preference(self, value):
         """Ensure movie preference is valid."""
         if not value:
             return 'maybe'  # Default to maybe
         return value
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     def validate(self, attrs):
         start_time = attrs.get('start_time')
@@ -145,24 +133,18 @@ class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     username = serializers.CharField()
     email = serializers.EmailField(allow_blank=True)
-<<<<<<< HEAD
     avatar_id = serializers.SerializerMethodField()
 
     def get_avatar_id(self, obj):
         profile, _ = Profile.objects.get_or_create(user=obj)
         return profile.avatar_id
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
 
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     email = serializers.EmailField(required=False, allow_blank=True)
     password = serializers.CharField(write_only=True, min_length=8)
-<<<<<<< HEAD
     avatar_id = serializers.CharField(required=False, allow_blank=True, max_length=32)
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     def validate_username(self, value):
         User = get_user_model()
@@ -177,21 +159,14 @@ class RegisterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         User = get_user_model()
-<<<<<<< HEAD
         avatar_id = (validated_data.get('avatar_id') or '').strip() or 'outora-01'
         user = User.objects.create_user(
-=======
-        return User.objects.create_user(
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             username=validated_data['username'],
             email=validated_data.get('email', ''),
             password=validated_data['password'],
         )
-<<<<<<< HEAD
         Profile.objects.update_or_create(user=user, defaults={'avatar_id': avatar_id})
         return user
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
 
 class LoginSerializer(serializers.Serializer):

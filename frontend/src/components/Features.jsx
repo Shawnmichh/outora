@@ -7,11 +7,7 @@ const features = [
     ),
     title: 'Intelligent Planning',
     description:
-<<<<<<< HEAD
       'Itineraries that adapt to your interests, budget, and available time. Spend less time juggling tabs and more time enjoying the day.',
-=======
-      'Itineraries that adapt to your interests, budget, and available time.',
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
   },
   {
     icon: (
@@ -67,7 +63,6 @@ const features = [
 ];
 
 function Features() {
-<<<<<<< HEAD
   const leadFeature = features[0];
   const secondaryFeatures = features.slice(1, 4);
   const supportingFeatures = features.slice(4);
@@ -81,22 +76,10 @@ function Features() {
             Everything you need
           </h2>
           <p className="mt-2 text-base text-[var(--color-text-secondary)]">
-=======
-  return (
-    <section id="features" className="relative px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Section header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-            Everything you need
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-zinc-400">
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             Smart planning tools designed for explorers and locals alike.
           </p>
         </div>
 
-<<<<<<< HEAD
         {/* Asymmetric feature layout */}
         <div className="grid gap-5 lg:grid-cols-12">
 
@@ -163,22 +146,6 @@ function Features() {
               </ul>
             </div>
           </div>
-=======
-        {/* Feature grid */}
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.06] sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <article
-              key={feature.title}
-              className="group relative bg-zinc-950 p-8 transition-colors hover:bg-zinc-900/50"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.02] text-emerald-400 transition-all group-hover:border-emerald-500/20 group-hover:bg-emerald-500/5">
-                {feature.icon}
-              </div>
-              <h3 className="mt-6 text-base font-semibold text-white">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500">{feature.description}</p>
-            </article>
-          ))}
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         </div>
       </div>
     </section>

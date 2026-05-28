@@ -22,10 +22,7 @@ import {
   VIBE_OPTIONS,
   FOOD_OPTIONS,
   MEAL_OPTIONS,
-<<<<<<< HEAD
   MOVIE_OPTIONS,
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 } from './constants';
 
 const VALID_USER_TYPES = new Set(USER_TYPE_OPTIONS.map((option) => option.value));
@@ -225,7 +222,6 @@ function QuestionnaireForm() {
         </FormField>
 
         <FormField 
-<<<<<<< HEAD
           label="Interested in watching a movie afterwards?" 
           hint="We'll suggest a theater with currently playing movies"
         >
@@ -239,8 +235,6 @@ function QuestionnaireForm() {
         </FormField>
 
         <FormField 
-=======
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
           label="Meal preferences" 
           hint="Select which meals you want included (optional)"
         >
@@ -265,13 +259,8 @@ function QuestionnaireForm() {
       </FormSection>
 
       {showValidation && !isValidOutingPlan(formData) && (
-<<<<<<< HEAD
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-medium text-amber-800">
           Please complete all required fields before generating your plan.
-=======
-        <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-center text-sm text-amber-200">
-          Please complete all fields before generating your plan.
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         </p>
       )}
 
@@ -281,11 +270,7 @@ function QuestionnaireForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-<<<<<<< HEAD
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-accent)] px-8 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-=======
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-semibold text-zinc-950 shadow-lg shadow-black/10 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         >
           {isLoading ? (
             <>
