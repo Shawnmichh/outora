@@ -2,40 +2,26 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-<<<<<<< HEAD
 
-  /* Clean travel-app palette — inspired by Airbnb / Google Travel */
+  /* Clean travel-app palette */
   --color-bg: #f7f8fa;
   --color-surface: #ffffff;
   --color-surface-secondary: #f2f4f7;
   --color-surface-raised: #ffffff;
+
   --color-text-primary: #0f172a;
   --color-text-secondary: #374151;
   --color-text-muted: #6b7280;
+
   --color-accent: #0d7377;
   --color-accent-hover: #0a5e62;
   --color-accent-soft: #e0f2f1;
-  --color-accent-warm: #fff8f1;
+
   --color-border: #e2e5ea;
   --color-border-strong: #cbd2da;
+
   --color-success-muted: #d1fae5;
   --color-highlight: #fff3e8;
-=======
-  
-  /* Premium color system */
-  --color-charcoal: #0a0a0b;
-  --color-surface: #111113;
-  --color-surface-elevated: #18181b;
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-border-hover: rgba(255, 255, 255, 0.12);
-  
-  /* Refined accent colors */
-  --color-emerald-muted: #10b981;
-  --color-cyan-muted: #06b6d4;
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #a1a1aa;
-  --color-text-tertiary: #71717a;
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 }
 
 html {
@@ -46,7 +32,6 @@ html {
 
 body {
   font-family: var(--font-sans);
-<<<<<<< HEAD
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   line-height: 1.65;
@@ -73,33 +58,11 @@ body {
 /* Hide native number spinners while keeping keyboard input */
 .outora-no-number-spin {
   appearance: textfield;
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
 }
 
 .outora-no-number-spin::-webkit-outer-spin-button,
 .outora-no-number-spin::-webkit-inner-spin-button {
-  -webkit-appearance: none; /* Chrome, Edge, Safari */
+  -webkit-appearance: none;
   margin: 0;
-=======
-  background-color: var(--color-charcoal);
-  color: var(--color-text-primary);
-  line-height: 1.6;
-}
-
-/* Premium focus states */
-*:focus-visible {
-  outline: 2px solid rgba(16, 185, 129, 0.4);
-  outline-offset: 2px;
-}
-
-/* Smooth transitions */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Selection styling */
-::selection {
-  background-color: rgba(16, 185, 129, 0.2);
-  color: var(--color-text-primary);
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 }
