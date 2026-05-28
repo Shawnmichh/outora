@@ -19,7 +19,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Home />} />
-<<<<<<< HEAD
+
       <Route
         path={ROUTES.TOURIST}
         element={(
@@ -28,6 +28,7 @@ function AppRoutes() {
           </ProtectedRoute>
         )}
       />
+
       <Route
         path={ROUTES.LOCALITE}
         element={(
@@ -36,6 +37,7 @@ function AppRoutes() {
           </ProtectedRoute>
         )}
       />
+
       <Route
         path={ROUTES.QUESTIONNAIRE}
         element={(
@@ -44,6 +46,7 @@ function AppRoutes() {
           </ProtectedRoute>
         )}
       />
+
       <Route
         path={ROUTES.RESULTS}
         element={(
@@ -52,12 +55,7 @@ function AppRoutes() {
           </ProtectedRoute>
         )}
       />
-=======
-      <Route path={ROUTES.TOURIST} element={<Tourist />} />
-      <Route path={ROUTES.LOCALITE} element={<Localite />} />
-      <Route path={ROUTES.QUESTIONNAIRE} element={<Questionnaire />} />
-      <Route path={ROUTES.RESULTS} element={<Results />} />
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
+
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
       <Route path={ROUTES.SHARED_TRIP} element={<SharedTrip />} />
@@ -65,6 +63,7 @@ function AppRoutes() {
       <Route path={ROUTES.CONTACT} element={<Contact />} />
       <Route path={ROUTES.PRIVACY} element={<Privacy />} />
       <Route path={ROUTES.TERMS} element={<Terms />} />
+
       <Route
         path={ROUTES.MY_TRIPS}
         element={(
