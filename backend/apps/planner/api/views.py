@@ -186,7 +186,11 @@ class RegisterView(APIView):
         response_serializer = AuthResponseSerializer(
             {
                 'token': token,
+<<<<<<< HEAD
                 'user': user,
+=======
+                'user': UserSerializer(user).data,
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             }
         )
         return _response_with_auth_cookie(
@@ -208,7 +212,11 @@ class LoginView(APIView):
         response_serializer = AuthResponseSerializer(
             {
                 'token': token,
+<<<<<<< HEAD
                 'user': user,
+=======
+                'user': UserSerializer(user).data,
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             }
         )
         return _response_with_auth_cookie(response_serializer.data)

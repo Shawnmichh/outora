@@ -3,6 +3,7 @@ from django.conf import settings
 import uuid
 
 
+<<<<<<< HEAD
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -17,6 +18,8 @@ class Profile(models.Model):
         return f'Profile({self.user_id})'
 
 
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 class SavedTrip(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

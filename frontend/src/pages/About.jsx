@@ -8,6 +8,7 @@ function About() {
 
   return (
     <AppLayout>
+<<<<<<< HEAD
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -18,27 +19,70 @@ function About() {
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)] sm:text-lg">
             Outora is a travel planning platform that transforms how you experience cities — whether
+=======
+      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Subtle ambient glow */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-96 w-full max-w-lg -translate-x-1/2 rounded-full bg-emerald-500/[0.03] blur-[120px]"
+          aria-hidden="true"
+        />
+
+        {/* Header */}
+        <header className="relative mb-16 text-center sm:mb-20">
+          <div className="mb-6 flex justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-2 backdrop-blur-sm">
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="text-sm font-medium text-zinc-400">About Outora</span>
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Discover cities
+            <br />
+            <span className="bg-gradient-to-br from-emerald-400 via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
+              differently
+            </span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
+            Outora is an intelligent exploration platform that transforms how you experience cities—whether
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             you're visiting for the first time or rediscovering home.
           </p>
         </header>
 
         {/* Mission Section */}
+<<<<<<< HEAD
         <section className="mb-12">
           <div className="rounded-xl border border-[var(--color-border)] bg-white p-7 sm:p-8">
             <div className="flex items-start gap-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent-soft)] text-[var(--color-accent)]">
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+=======
+        <section className="relative mb-16">
+          <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/50 to-zinc-950/50 p-8 sm:p-10 backdrop-blur-sm">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/5 text-emerald-400">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
               </div>
               <div>
+<<<<<<< HEAD
                 <h2 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl">Our Mission</h2>
                 <p className="mt-3 text-base leading-relaxed text-[var(--color-text-secondary)]">
+=======
+                <h2 className="text-2xl font-bold text-white sm:text-3xl">Our Mission</h2>
+                <p className="mt-4 text-base leading-relaxed text-zinc-400 sm:text-lg">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                   We believe exploration should be intentional, not overwhelming. Outora combines AI-powered
                   planning with local insights to create personalized outings that match your interests, time,
                   and budget.
                 </p>
+<<<<<<< HEAD
                 <p className="mt-3 text-base leading-relaxed text-[var(--color-text-secondary)]">
+=======
+                <p className="mt-4 text-base leading-relaxed text-zinc-400 sm:text-lg">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                   Whether you're a tourist seeking highlights or a local looking for hidden gems, Outora helps
                   you make the most of every moment.
                 </p>
@@ -48,6 +92,7 @@ function About() {
         </section>
 
         {/* Why Outora Section */}
+<<<<<<< HEAD
         <section className="mb-12">
           <div className="mb-6 border-l-2 border-[var(--color-accent)] pl-4">
             <h2 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl">
@@ -55,6 +100,13 @@ function About() {
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
+=======
+        <section className="relative mb-16">
+          <h2 className="mb-10 text-center text-2xl font-bold text-white sm:text-3xl">
+            Why choose Outora?
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-2">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             {[
               {
                 icon: (
@@ -96,6 +148,7 @@ function About() {
             ].map((feature) => (
               <article
                 key={feature.title}
+<<<<<<< HEAD
                 className="flex items-start gap-4 rounded-xl border border-[var(--color-border)] bg-white p-5 transition-colors hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]/20"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] text-[var(--color-accent)]">
@@ -105,12 +158,22 @@ function About() {
                   <h3 className="text-sm font-bold text-[var(--color-text-primary)]">{feature.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">{feature.description}</p>
                 </div>
+=======
+                className="group relative rounded-xl border border-white/[0.06] bg-zinc-950 p-6 transition-all hover:border-white/[0.12] hover:bg-zinc-900/50"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.02] text-emerald-400 transition-all group-hover:border-emerald-500/20 group-hover:bg-emerald-500/5">
+                  {feature.icon}
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-white">{feature.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-500">{feature.description}</p>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
               </article>
             ))}
           </div>
         </section>
 
         {/* How It Works */}
+<<<<<<< HEAD
         <section className="mb-12">
           <div className="mb-6 border-l-2 border-[var(--color-accent)] pl-4">
             <h2 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl">
@@ -118,6 +181,13 @@ function About() {
             </h2>
           </div>
           <ol className="space-y-4">
+=======
+        <section className="relative mb-16">
+          <h2 className="mb-10 text-center text-2xl font-bold text-white sm:text-3xl">
+            How it works
+          </h2>
+          <div className="space-y-4">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             {[
               {
                 step: '01',
@@ -135,6 +205,7 @@ function About() {
                 description: 'Receive a personalized plan with maps, timing, and curated recommendations.',
               },
             ].map((item) => (
+<<<<<<< HEAD
               <li
                 key={item.step}
                 className="flex items-start gap-5 rounded-xl border border-[var(--color-border)] bg-white p-5"
@@ -149,10 +220,27 @@ function About() {
               </li>
             ))}
           </ol>
+=======
+              <div
+                key={item.step}
+                className="flex gap-6 rounded-xl border border-white/[0.06] bg-zinc-950 p-6 transition-all hover:border-white/[0.12] hover:bg-zinc-900/50"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 text-lg font-bold text-white">
+                  {item.step}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-500">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         </section>
 
         {/* CTA Section - only show for unauthenticated users */}
         {!isAuthenticated && (
+<<<<<<< HEAD
           <section className="mb-12">
             <div className="rounded-xl border border-[var(--color-border)] bg-white p-8 text-center sm:p-10">
               <h2 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl">
@@ -165,6 +253,20 @@ function About() {
                 <Link
                   to={ROUTES.TOURIST}
                   className="inline-flex items-center gap-2.5 rounded-lg bg-[var(--color-accent)] px-7 py-3 text-base font-semibold text-white transition-all hover:bg-[var(--color-accent-hover)]"
+=======
+          <section className="relative mb-12 text-center">
+            <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/50 to-zinc-950/50 p-10 backdrop-blur-sm sm:p-12">
+              <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                Ready to explore?
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-lg text-zinc-400">
+                Start planning your next unforgettable outing in minutes.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link
+                  to={ROUTES.TOURIST}
+                  className="inline-flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white px-8 py-4 text-base font-semibold text-zinc-950 transition-all hover:border-white/20 hover:bg-white/95"
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
@@ -173,7 +275,11 @@ function About() {
                 </Link>
                 <Link
                   to={ROUTES.LOCALITE}
+<<<<<<< HEAD
                   className="inline-flex items-center gap-2.5 rounded-lg border border-[var(--color-border-strong)] bg-white px-7 py-3 text-base font-semibold text-[var(--color-text-primary)] transition-all hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+=======
+                  className="inline-flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/[0.05]"
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />

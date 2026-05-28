@@ -8,7 +8,10 @@ export const INITIAL_FORM_STATE = {
   outingVibe: '',
   foodPreference: '',
   mealPreferences: [],  // NEW: Multi-select meal timing preferences
+<<<<<<< HEAD
   moviePreference: 'maybe',  // NEW: Movie/entertainment preference (default: maybe)
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 };
 
 export const USER_TYPE_OPTIONS = [
@@ -61,6 +64,7 @@ export const MEAL_OPTIONS = [
   { value: 'snacks', label: 'Snacks / Cafes', description: '3 PM – 6 PM' },
   { value: 'no_meals', label: 'No food stops', description: 'Skip all dining' },
 ];
+<<<<<<< HEAD
 
 // NEW: Movie/entertainment preferences
 // Determines if movie theaters should be included in recommendations
@@ -69,3 +73,5 @@ export const MOVIE_OPTIONS = [
   { value: 'maybe', label: 'Maybe', description: 'If it fits the vibe' },
   { value: 'no', label: 'No', description: 'Skip movie theaters' },
 ];
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559

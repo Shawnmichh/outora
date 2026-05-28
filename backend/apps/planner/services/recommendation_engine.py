@@ -31,8 +31,11 @@ from apps.planner.services.google_places import (
     GooglePlacesService,
     GooglePlacesServiceError,
 )
+<<<<<<< HEAD
 from apps.planner.services.place_filter_service import PlaceFilterService
 from apps.planner.services.movie_intelligence_service import MovieIntelligenceService
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +86,7 @@ CATEGORY_DIVERSITY_TARGETS = {
     'nature': 0.03,      # REDUCED to 3% - scenic spots (supplemental)
 }
 
+<<<<<<< HEAD
 # NOTE: This map is only used as a last resort fallback when a place has no
 # recognizable Google types. Categories MUST be valid internal values:
 # 'food', 'explore', 'activity', 'shopping', 'culture', 'nature', 'nightlife'
@@ -90,6 +94,12 @@ VIBE_CATEGORY_MAP = {
     'cultural': 'culture',
     'fun': 'activity',
     'romantic': 'explore',    # Fixed: was 'dining' which is not a valid category
+=======
+VIBE_CATEGORY_MAP = {
+    'cultural': 'culture',
+    'fun': 'activity',
+    'romantic': 'dining',
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     'adventurous': 'activity',
     'relaxing': 'nature',
     'relaxed': 'nature',
@@ -112,15 +122,21 @@ class RecommendationEngine:
         max_recommendations: int | None = None,  # None = calculate from duration
         min_rating: float = DEFAULT_MIN_RATING,
         results_per_query: int = DEFAULT_RESULTS_PER_QUERY,
+<<<<<<< HEAD
         place_filter_service: PlaceFilterService | None = None,
         movie_intelligence_service: MovieIntelligenceService | None = None,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     ):
         self.places_service = places_service or GooglePlacesService()
         self._max_recommendations_override = max_recommendations  # For testing
         self.min_rating = min_rating
         self.results_per_query = results_per_query
+<<<<<<< HEAD
         self.place_filter = place_filter_service or PlaceFilterService()
         self.movie_intelligence = movie_intelligence_service or MovieIntelligenceService()
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     def generate_recommendations(
         self,
@@ -276,6 +292,7 @@ class RecommendationEngine:
         else:
             fallback_triggered = False
         
+<<<<<<< HEAD
         # CRITICAL FIX: Protect explicitly requested categories from being sliced off
         protected_stops = []
         unprotected_stops = []
@@ -329,6 +346,10 @@ class RecommendationEngine:
                         recommendations.pop(non_protected[-1])
                 recommendations.append(best_movie)
                 
+=======
+        # Take final recommendations (now AFTER validation)
+        recommendations = validated_all[:max_recommendations]
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         pipeline_stages.append({'stage': 'final_slice', 'count': len(recommendations)})
         logger.info('Stage 7 - Final Slice: %d places (target: %d)', len(recommendations), max_recommendations)
         
@@ -422,9 +443,12 @@ class RecommendationEngine:
                     'food_actual': final_category_counts.get('food', 0),
                     'non_food_quota': sum(v for k, v in category_quotas.items() if k != 'food'),
                     'non_food_actual': sum(v for k, v in final_category_counts.items() if k != 'food'),
+<<<<<<< HEAD
                     'movie_theaters_allowed': self._should_include_movie_theaters(preferences),
                     'movie_theaters_max': self._get_max_movie_theaters(preferences),
                     'movie_theaters_actual': sum(1 for r in recommendations if r.get('is_movie_theater')),
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 },
                 # Coordinate validation metadata
                 'coordinate_validation': coordinate_validation,
@@ -654,6 +678,7 @@ class RecommendationEngine:
         total_stops = max_recommendations
         duration_hours = self._calculate_outing_duration(preferences)
         
+<<<<<<< HEAD
         # HARD LIMIT: Food stops based on duration and requested meals
         requested_meals = len(preferences.get('meal_preferences', []))
         if duration_hours <= 4:
@@ -662,6 +687,18 @@ class RecommendationEngine:
             max_food = max(1, requested_meals) if requested_meals else 1
         else:
             max_food = max(2, requested_meals) if requested_meals else 2
+=======
+        # HARD LIMIT: Food stops based on duration
+        if duration_hours <= 4:
+            # Short outing: MAX 1 food stop (or 0 if no meals selected)
+            max_food = 1
+        elif duration_hours <= 8:
+            # Medium outing: MAX 1 food stop
+            max_food = 1
+        else:
+            # Full-day outing: MAX 2 food stops
+            max_food = 2
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         
         # If no meals selected, ZERO food stops
         if not self._should_include_food_stops(preferences):
@@ -671,6 +708,7 @@ class RecommendationEngine:
         remaining_stops = total_stops - max_food
         
         # Distribute remaining stops across non-food categories
+<<<<<<< HEAD
         vibe = preferences.get('outing_vibe', 'explore')
         
         if vibe == 'romantic':
@@ -693,6 +731,17 @@ class RecommendationEngine:
                 'culture': max(1, int(remaining_stops * 0.12)),      # 12%
                 'nature': max(0, int(remaining_stops * 0.08)),       # 8%
             }
+=======
+        # Priority: explore > activity > shopping > culture > nature
+        quotas = {
+            'food': max_food,
+            'explore': max(1, int(remaining_stops * 0.35)),      # 35% - HIGHEST
+            'activity': max(1, int(remaining_stops * 0.30)),     # 30% - HIGH
+            'shopping': max(1, int(remaining_stops * 0.15)),     # 15%
+            'culture': max(1, int(remaining_stops * 0.12)),      # 12%
+            'nature': max(0, int(remaining_stops * 0.08)),       # 8%
+        }
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         
         # Ensure quotas don't exceed total stops
         total_quota = sum(quotas.values())
@@ -700,6 +749,7 @@ class RecommendationEngine:
             # Scale down proportionally
             scale = total_stops / total_quota
             for category in quotas:
+<<<<<<< HEAD
                 quotas[category] = int(quotas[category] * scale)
                 
             # ENFORCE HARD INTENT: Do not let explicitly requested food vanish
@@ -719,6 +769,10 @@ class RecommendationEngine:
         if self._should_include_movie_theaters(preferences):
             quotas['activity'] = max(1, quotas.get('activity', 0))
             
+=======
+                quotas[category] = max(0, int(quotas[category] * scale))
+        
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         logger.info(
             'Category quotas for %d stops (%.1fh duration): food=%d, explore=%d, activity=%d, '
             'shopping=%d, culture=%d, nature=%d',
@@ -878,8 +932,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         # 2. ACTIVITY category (gaming, bowling, entertainment, arcades)
@@ -895,8 +952,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         # 3. SHOPPING category (malls, markets, boutiques)
@@ -912,8 +972,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         # 4. CULTURE category (museums, galleries, theaters)
@@ -929,8 +992,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         # 5. NATURE category (parks, gardens, beaches)
@@ -946,8 +1012,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         # 6. FOOD category (ONLY if meal preferences allow, LOWEST PRIORITY)
@@ -965,8 +1034,11 @@ class RecommendationEngine:
                 vibe,
                 queries_attempted,
                 errors,
+<<<<<<< HEAD
                 preferences,
                 collected_by_category,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             )
         
         return collected_by_category, queries_attempted, errors
@@ -982,20 +1054,27 @@ class RecommendationEngine:
         vibe: str,
         queries_attempted: list[str],
         errors: list[str],
+<<<<<<< HEAD
         preferences: dict[str, Any] | None = None,
         collected_by_category: dict[str, list[dict[str, Any]]] | None = None,
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     ) -> list[dict[str, Any]]:
         """
         Fetch places for a specific category using category-specific keywords.
         
         RELAXED FILTERING: Accept places that are close enough to target category.
         This prevents over-filtering that collapses recommendations to single stops.
+<<<<<<< HEAD
         
         NEW: Movie theater limiting - enforces maximum 1 movie theater per itinerary.
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         """
         collected: list[dict[str, Any]] = []
         rejected_by_category: list[tuple[str, str, str]] = []  # (name, assigned_category, target_category)
         
+<<<<<<< HEAD
         # Track movie theaters collected across ALL categories
         max_movie_theaters = 0
         if preferences:
@@ -1007,6 +1086,8 @@ class RecommendationEngine:
             for category_stops in collected_by_category.values():
                 existing_movie_count += sum(1 for s in category_stops if s.get('is_movie_theater'))
         
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         for keyword in keywords:
             if len(collected) >= max_results:
                 break
@@ -1030,6 +1111,7 @@ class RecommendationEngine:
                     len(places),
                 )
                 
+<<<<<<< HEAD
                 # FILTER OUT IRRELEVANT PLACES (hospitals, clinics, offices, etc.)
                 # Pass the FULL preferences dict so meal_preferences/movie_preference reach scoring.
                 filter_prefs = dict(preferences) if preferences else {}
@@ -1069,16 +1151,25 @@ class RecommendationEngine:
                         # Movie enhancement will be done later in the pipeline
                         place['is_movie_theater'] = True
                     
+=======
+                for place in places:
+                    if len(collected) >= max_results:
+                        break
+                    
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                     stop = self._to_recommendation_stop(
                         place,
                         search_keyword=query,
                         vibe=vibe,
                     )
                     
+<<<<<<< HEAD
                     # Preserve movie theater flag
                     if is_movie_theater:
                         stop['is_movie_theater'] = True
                     
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                     assigned_category = stop['category']
                     
                     # RELAXED FILTER: Accept if category matches OR is compatible
@@ -1372,8 +1463,11 @@ class RecommendationEngine:
                     preferences.get('outing_vibe', ''),
                     queries_attempted,
                     errors,
+<<<<<<< HEAD
                     preferences,
                     None,  # No collected_by_category in fallback
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 )
                 
                 additional.extend(category_stops)
@@ -1463,6 +1557,7 @@ class RecommendationEngine:
         search_keyword: str,
         vibe: str,
     ) -> dict[str, Any]:
+<<<<<<< HEAD
         # ALWAYS derive category from the place's actual Google types first.
         # The VIBE_CATEGORY_MAP is only used as an absolute last resort when
         # the place has no recognizable types at all. This prevents romantic
@@ -1483,6 +1578,11 @@ class RecommendationEngine:
             category = type_based_category
 
         stop = {
+=======
+        category = VIBE_CATEGORY_MAP.get(vibe) or self._category_from_types(place.get('types', []))
+
+        return {
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             'name': place['name'],
             'address': place.get('address', ''),
             'rating': place.get('rating'),
@@ -1492,12 +1592,15 @@ class RecommendationEngine:
             'search_keyword': search_keyword,
             'source': 'google_places',
         }
+<<<<<<< HEAD
         
         # Preserve movie theater flag if present
         if place.get('is_movie_theater'):
             stop['is_movie_theater'] = True
         
         return stop
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     @staticmethod
     def _category_from_types(types: list[str]) -> str:
@@ -1621,6 +1724,7 @@ class RecommendationEngine:
         """
         balanced: list[dict[str, Any]] = []
         
+<<<<<<< HEAD
         vibe = preferences.get('outing_vibe', '')
         
         # Priority order for filling shortfalls. We prioritize activity/food/nature over explore
@@ -1629,6 +1733,10 @@ class RecommendationEngine:
             priority_order = ['food', 'activity', 'nature', 'nightlife', 'culture', 'shopping', 'explore']
         else:
             priority_order = ['food', 'activity', 'explore', 'shopping', 'culture', 'nature', 'nightlife']
+=======
+        # Priority order: explore > activity > shopping > culture > nature > food
+        priority_order = ['explore', 'activity', 'shopping', 'culture', 'nature', 'food', 'nightlife']
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         
         # Track how many stops we actually selected per category
         actual_selections: dict[str, int] = {}
@@ -1640,6 +1748,7 @@ class RecommendationEngine:
             
             available_stops = collected_by_category.get(category, [])
             
+<<<<<<< HEAD
             # Calculate sorting key that strongly favors movie theaters if requested
             def get_sort_score(s):
                 base_score = s.get('rating') or 0
@@ -1653,6 +1762,12 @@ class RecommendationEngine:
             available_stops_sorted = sorted(
                 available_stops,
                 key=get_sort_score,
+=======
+            # Take up to quota, sorted by rating
+            available_stops_sorted = sorted(
+                available_stops,
+                key=lambda s: s.get('rating') or 0,
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 reverse=True,
             )
             
@@ -1689,6 +1804,7 @@ class RecommendationEngine:
                 selected_count = actual_selections.get(category, 0)
                 available_stops = collected_by_category.get(category, [])
                 
+<<<<<<< HEAD
                 if len(available_stops) > selected_count:
                     # Calculate sorting key that strongly favors movie theaters if requested
                     def get_sort_score_fallback(s):
@@ -1700,6 +1816,13 @@ class RecommendationEngine:
                     available_stops_sorted = sorted(
                         available_stops,
                         key=get_sort_score_fallback,
+=======
+                # If this category has more available stops than we took, take more
+                if len(available_stops) > selected_count:
+                    available_stops_sorted = sorted(
+                        available_stops,
+                        key=lambda s: s.get('rating') or 0,
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                         reverse=True,
                     )
                     
@@ -1950,6 +2073,7 @@ class RecommendationEngine:
         
         # Meal preferences selected, include food
         return True
+<<<<<<< HEAD
     
     def _should_include_movie_theaters(self, preferences: dict[str, Any]) -> bool:
         """
@@ -2013,6 +2137,8 @@ class RecommendationEngine:
         if not self._should_include_movie_theaters(preferences):
             return 0
         return 1  # HARD LIMIT: Maximum 1 movie theater
+=======
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
     @staticmethod
     def _deduplicate_key(stop: dict[str, Any]) -> tuple:

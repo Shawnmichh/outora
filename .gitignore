@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Node
 node_modules/
 dist/
@@ -28,3 +29,26 @@ coverage/
 # IDE
 .vscode/
 .idea/
+=======
+# env
+.env
+backend/.env
+frontend/.env
+
+# node
+node_modules/
+dist/
+
+# python
+venv/
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559

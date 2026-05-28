@@ -522,11 +522,19 @@ function StopMarker({ stop, position, isFirst, isLast, travelDurationAfter }) {
 /** Animated loading state with pulsing map-pin icon. */
 function MapSkeleton({ label }) {
   return (
+<<<<<<< HEAD
     <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[#f7f8fa]">
       <div className="relative flex h-14 w-14 items-center justify-center">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0d7377] opacity-15" />
         <svg
           className="h-7 w-7 text-[#0d7377]"
+=======
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-2xl border border-white/5 bg-zinc-900/40">
+      <div className="relative flex h-14 w-14 items-center justify-center">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-20" />
+        <svg
+          className="h-7 w-7 text-emerald-400"
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -537,7 +545,11 @@ function MapSkeleton({ label }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
         </svg>
       </div>
+<<<<<<< HEAD
       <p className="text-sm font-medium text-[#374151]">{label}</p>
+=======
+      <p className="text-sm text-zinc-400">{label}</p>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
     </div>
   );
 }
@@ -545,18 +557,31 @@ function MapSkeleton({ label }) {
 /** Error state card shown when the map cannot be displayed at all. */
 function MapError({ title, message, details, actionLink }) {
   return (
+<<<<<<< HEAD
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-[#f7f8fa] px-6 py-8 text-center">
       <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-500">
+=======
+    <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-white/5 bg-zinc-900/40 px-6 py-8 text-center">
+      <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-400">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
         </svg>
       </div>
       <div className="max-w-md">
+<<<<<<< HEAD
         <p className="text-sm font-bold text-red-700">{title}</p>
         <p className="mt-2 text-xs leading-relaxed text-[#374151]">{message}</p>
         {details && (
           <div className="mt-3 rounded-lg border border-[#e2e5ea] bg-[#f2f4f7] px-3 py-2 text-left">
             <p className="text-[10px] font-mono text-[#6b7280]">{details}</p>
+=======
+        <p className="text-sm font-semibold text-red-400">{title}</p>
+        <p className="mt-2 text-xs leading-relaxed text-zinc-400">{message}</p>
+        {details && (
+          <div className="mt-3 rounded-lg border border-zinc-800 bg-zinc-950/50 px-3 py-2 text-left">
+            <p className="text-[10px] font-mono text-zinc-500">{details}</p>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
           </div>
         )}
         {actionLink && (
@@ -564,7 +589,11 @@ function MapError({ title, message, details, actionLink }) {
             href={actionLink.url}
             target="_blank"
             rel="noopener noreferrer"
+<<<<<<< HEAD
             className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-[#0d7377]/30 bg-[#e0f2f1] px-3 py-1.5 text-xs font-semibold text-[#0d7377] transition hover:bg-[#0d7377] hover:text-white"
+=======
+            className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-500/20"
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
           >
             {actionLink.label}
             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
@@ -585,7 +614,11 @@ function DurationChip({ duration }) {
   if (!duration) return null;
   return (
     <span
+<<<<<<< HEAD
       className="mx-1 inline-flex items-center gap-1 rounded-md border border-[#0d7377]/25 bg-[#e0f2f1] px-2 py-0.5 text-[10px] font-semibold text-[#0d7377]"
+=======
+      className="mx-1 inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400"
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
       title="Estimated travel time"
     >
       <svg className="h-2.5 w-2.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden>
@@ -803,7 +836,11 @@ export default function ItineraryMap({
   // ── Guard: missing API key ─────────────────────────────────────────────────
   if (!apiKey) {
     return (
+<<<<<<< HEAD
       <div className={`h-80 overflow-hidden rounded-xl border border-[#e2e5ea] bg-[#f7f8fa] ${className}`}>
+=======
+      <div className={`h-80 ${className}`}>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         <MapError
           title="Missing API Key"
           message="VITE_GOOGLE_MAPS_API_KEY environment variable is not configured. Add it to your .env file."
@@ -821,7 +858,11 @@ export default function ItineraryMap({
   if (loadError) {
     const errorInfo = parseGoogleMapsError(loadError);
     return (
+<<<<<<< HEAD
       <div className={`h-80 overflow-hidden rounded-xl border border-[#e2e5ea] bg-[#f7f8fa] ${className}`}>
+=======
+      <div className={`h-80 ${className}`}>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         <MapError {...errorInfo} />
       </div>
     );
@@ -830,12 +871,21 @@ export default function ItineraryMap({
   // ── Guard: no stops ────────────────────────────────────────────────────────
   if (!stops?.length) {
     return (
+<<<<<<< HEAD
       <div className={`h-80 overflow-hidden rounded-xl border border-[#e2e5ea] bg-[#f7f8fa] ${className}`}>
         <div className="flex h-full w-full flex-col items-center justify-center gap-2">
           <svg className="h-8 w-8 text-[#9ca3af]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
           </svg>
           <p className="text-sm font-medium text-[#6b7280]">No stops to display on the map.</p>
+=======
+      <div className={`h-80 ${className}`}>
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 bg-zinc-900/40">
+          <svg className="h-8 w-8 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+          </svg>
+          <p className="text-sm text-zinc-600">No stops to display on the map.</p>
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         </div>
       </div>
     );
@@ -844,22 +894,38 @@ export default function ItineraryMap({
   const initialCenter = biasCenter ?? DEFAULT_CENTER;
 
   return (
+<<<<<<< HEAD
     <div className={`overflow-hidden rounded-xl border border-[#e2e5ea] bg-white shadow-sm ${className}`}>
 
       {/* ── Header bar ──────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between border-b border-[#e2e5ea] bg-white px-5 py-3.5">
         <div className="flex items-center gap-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e0f2f1] text-[#0d7377]">
+=======
+    <div className={`overflow-hidden rounded-2xl border border-white/5 bg-zinc-900/40 ${className}`}>
+
+      {/* ── Header bar ──────────────────────────────────────────────────────── */}
+      <div className="flex items-center justify-between border-b border-white/5 px-5 py-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
           </span>
           <div>
+<<<<<<< HEAD
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#0f172a]">
               Route Map
             </h3>
             <p className="text-xs text-[#6b7280]">
+=======
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-emerald-400">
+              Route Map
+            </h3>
+            <p className="text-xs text-zinc-500">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
               {geocoding
                 ? 'Locating stops…'
                 : directionsLoading
@@ -876,6 +942,7 @@ export default function ItineraryMap({
         {/* Legend */}
         <div className="hidden items-center gap-4 sm:flex">
           {hasRoute && (
+<<<<<<< HEAD
             <span className="flex items-center gap-1.5 text-xs font-medium text-[#374151]">
               <span className="inline-block h-1 w-5 rounded-full bg-[#10b981]" />
               Route
@@ -886,6 +953,18 @@ export default function ItineraryMap({
             Start
           </span>
           <span className="flex items-center gap-1.5 text-xs font-medium text-[#374151]">
+=======
+            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+              <span className="inline-block h-1 w-5 rounded-full bg-emerald-500 opacity-80" />
+              Route
+            </span>
+          )}
+          <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            Start
+          </span>
+          <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-rose-500" />
             End
           </span>
@@ -894,7 +973,11 @@ export default function ItineraryMap({
 
       {/* ── Directions-unavailable warning banner (fallback mode) ────────────── */}
       {showFallbackWarning && (
+<<<<<<< HEAD
         <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-5 py-2.5 text-xs font-medium text-amber-800">
+=======
+        <div className="flex items-center gap-2 border-b border-amber-500/10 bg-amber-500/5 px-5 py-2.5 text-xs text-amber-400">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
           <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
           </svg>
@@ -964,6 +1047,7 @@ export default function ItineraryMap({
 
       {/* ── Bottom strip: stop legend + travel durations ─────────────────────── */}
       {!isWorking && resolvedStops.length > 0 && (
+<<<<<<< HEAD
         <div className="border-t border-[#e2e5ea] bg-white px-5 py-4">
 
           {/* Travel summary row (only when directions succeeded) */}
@@ -980,6 +1064,24 @@ export default function ItineraryMap({
                   </svg>
                   <DurationChip duration={dur} />
                   {i < legDurations.length - 1 && <span className="text-[#d1d5db]">·</span>}
+=======
+        <div className="border-t border-white/5 px-5 py-4">
+
+          {/* Travel summary row (only when directions succeeded) */}
+          {hasRoute && legDurations.length > 0 && (
+            <div className="mb-3 flex flex-wrap items-center gap-y-1 text-xs text-zinc-500">
+              <span className="mr-1 font-medium text-zinc-400">Travel time:</span>
+              {legDurations.map((dur, i) => (
+                <span key={i} className="flex items-center gap-1">
+                  <span className="text-zinc-600">
+                    {resolvedStops[i]?.stop.name.split(' ')[0]}
+                  </span>
+                  <svg className="h-3 w-3 shrink-0 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                  </svg>
+                  <DurationChip duration={dur} />
+                  {i < legDurations.length - 1 && <span className="text-zinc-700">·</span>}
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 </span>
               ))}
             </div>
@@ -988,7 +1090,11 @@ export default function ItineraryMap({
           {/* Numbered stop list */}
           <ol className="flex flex-wrap gap-x-5 gap-y-2">
             {resolvedStops.map(({ stop }, index) => (
+<<<<<<< HEAD
               <li key={stop.order} className="flex items-center gap-2 text-xs font-medium text-[#374151]">
+=======
+              <li key={stop.order} className="flex items-center gap-2 text-xs text-zinc-400">
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                 <span
                   className={[
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold',
@@ -996,7 +1102,11 @@ export default function ItineraryMap({
                       ? 'bg-emerald-500 text-white'
                       : index === resolvedStops.length - 1
                       ? 'bg-rose-500 text-white'
+<<<<<<< HEAD
                       : 'border-2 border-[#0d7377] bg-white text-[#0d7377]',
+=======
+                      : 'border border-emerald-500/40 bg-zinc-800 text-emerald-300',
+>>>>>>> d3c121908167cc75070a0def7dda712af6d61559
                   ].join(' ')}
                   aria-hidden
                 >
