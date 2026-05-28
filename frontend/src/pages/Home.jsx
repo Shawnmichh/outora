@@ -6,11 +6,7 @@ import Footer from '../layouts/Footer';
 
 function Home() {
   return (
-<<<<<<< HEAD
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text-primary)] antialiased">
-=======
-    <div className="min-h-screen bg-[#0a0a0b] text-white antialiased">
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
       <Navbar />
       <main>
         <Hero />

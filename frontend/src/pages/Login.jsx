@@ -10,15 +10,13 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, login } = useAuth();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-<<<<<<< HEAD
+
   const from = location.state?.from ?? { pathname: ROUTES.MY_TRIPS };
-=======
-  const from = location.state?.from?.pathname ?? ROUTES.MY_TRIPS;
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
 
   if (isAuthenticated) {
     return <Navigate to={from} replace />;
@@ -43,7 +41,6 @@ function Login() {
     <AppLayout>
       <AuthPanel
         badge="Welcome back"
-<<<<<<< HEAD
         title="Let’s plan something memorable"
         description="Sign in to pick up right where you left off — saved trips, polished plans, and quick reopens."
         submitLabel="Login"
@@ -53,19 +50,17 @@ function Login() {
         footerLinkLabel="Create an account"
         footerLinkTo={ROUTES.REGISTER}
         footerLinkState={{ from }}
-=======
-        title="Sign in"
-        description="Access your saved itineraries and continue planning polished outings."
-        submitLabel="Login"
-        footerText="New here?"
-        footerLinkLabel="Create an account"
-        footerLinkTo={ROUTES.REGISTER}
->>>>>>> d3c121908167cc75070a0def7dda712af6d61559
         error={error}
         isSubmitting={isSubmitting}
         onSubmit={handleSubmit}
       >
-        <AuthField label="Username" value={username} onChange={setUsername} autoComplete="username" />
+        <AuthField
+          label="Username"
+          value={username}
+          onChange={setUsername}
+          autoComplete="username"
+        />
+
         <AuthField
           label="Password"
           type="password"
