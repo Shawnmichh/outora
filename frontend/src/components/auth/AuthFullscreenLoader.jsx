@@ -37,11 +37,6 @@ function AuthFullscreenLoader({ message, rotate = true }) {
       </div>
 
       <div className="mx-auto flex min-h-[70vh] max-w-lg flex-col items-center justify-center text-center">
-        {/* Brand mark */}
-        <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-2.5">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-accent)]" />
-          <span className="text-sm font-semibold tracking-wide text-[var(--color-text-primary)]">Outora</span>
-        </div>
 
         <h1 className="mt-8 text-2xl font-semibold tracking-tight text-[var(--color-text-primary)] sm:text-3xl">
           {message ?? resolvedMessage}
