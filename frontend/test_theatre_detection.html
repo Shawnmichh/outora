@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theatre Detection Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .test-case {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status.pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .data-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .result.detected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .result.not-detected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        pre {
+            margin: 5px 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 Theatre Detection Logic Test</h1>
+    <p>Testing the hasMovieData() function with various stop configurations</p>
+
+    <div id="test-results"></div>
+
+    <script>
+        // Copy of the hasMovieData function from ItineraryStopsList.jsx
+        function hasMovieData(stop) {
+            // Check for movie enrichment data
+            if (stop.featured_movie || stop.movie_recommendations) {
+                return true;
+            }
+            
+            // Fallback: check if it's flagged as a movie theater
+            if (stop.is_movie_theater) {
+                return true;
+            }
+            
+            // Fallback: check types array for movie_theater
+            if (stop.types && Array.isArray(stop.types) && stop.types.includes('movie_theater')) {
+                return true;
+            }
+            
+            // Fallback: check if name contains common theater keywords
+            const name = (stop.name || '').toLowerCase();
+            const theaterKeywords = ['pvr', 'inox', 'cinepolis', 'cinema', 'theatre', 'theater', 'multiplex'];
+            if (theaterKeywords.some(keyword => name.includes(keyword))) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Test cases
+        const testCases = [
+            {
+                name: 'Theatre with full movie data',
+                stop: {
+                    name: 'PVR VR Chennai Anna Nagar',
+                    category: 'activity',
+                    is_movie_theater: true,
+                    featured_movie: {
+                        title: 'Interstellar',
+                        rating: 8.6,
+                        genres: ['Sci-Fi', 'Drama']
+                    },
+                    movie_recommendations: [
+                        { title: 'Interstellar', rating: 8.6 }
+                    ],
+                    types: ['movie_theater', 'point_of_interest']
+                },
+                expected: true
+            },
+            {
+                name: 'Theatre with is_movie_theater flag only',
+                stop: {
+                    name: 'INOX Lido Mall',
+                    category: 'activity',
+                    is_movie_theater: true,
+                    types: ['movie_theater']
+                },
+                expected: true
+            },
+            {
+                name: 'Theatre detected by types array',
+                stop: {
+                    name: 'Cinepolis VR Mall',
+                    category: 'activity',
+                    types: ['movie_theater', 'entertainment']
+                },
+                expected: true
+            },
+            {
+                name: 'Theatre detected by name (PVR)',
+                stop: {
+                    name: 'PVR Phoenix Market City',
+                    category: 'activity',
+                    types: ['point_of_interest']
+                },
+                expected: true
+            },
+            {
+                name: 'Theatre detected by name (INOX)',
+                stop: {
+                    name: 'INOX Forum Mall',
+                    category: 'activity'
+                },
+                expected: true
+            },
+            {
+                name: 'Theatre detected by name (Cinema)',
+                stop: {
+                    name: 'Sathyam Cinemas',
+                    category: 'activity'
+                },
+                expected: true
+            },
+            {
+                name: 'Non-theatre: Restaurant',
+                stop: {
+                    name: 'Pizza Hut',
+                    category: 'food',
+                    types: ['restaurant', 'food']
+                },
+                expected: false
+            },
+            {
+                name: 'Non-theatre: Cafe',
+                stop: {
+                    name: 'Starbucks Coffee',
+                    category: 'food',
+                    types: ['cafe', 'food']
+                },
+                expected: false
+            },
+            {
+                name: 'Non-theatre: Gaming Center',
+                stop: {
+                    name: 'Smaaash Gaming',
+                    category: 'activity',
+                    types: ['amusement_park', 'entertainment']
+                },
+                expected: false
+            },
+            {
+                name: 'Non-theatre: Park',
+                stop: {
+                    name: 'Central Park',
+                    category: 'nature',
+                    types: ['park']
+                },
+                expected: false
+            }
+        ];
+
+        // Run tests
+        const resultsContainer = document.getElementById('test-results');
+        let passCount = 0;
+        let failCount = 0;
+
+        testCases.forEach((testCase, index) => {
+            const result = hasMovieData(testCase.stop);
+            const passed = result === testCase.expected;
+            
+            if (passed) passCount++;
+            else failCount++;
+
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-case';
+            testDiv.innerHTML = `
+                <h3>
+                    Test ${index + 1}: ${testCase.name}
+                    <span class="status ${passed ? 'pass' : 'fail'}">
+                        ${passed ? '✓ PASS' : '✗ FAIL'}
+                    </span>
+                </h3>
+                <div class="data-box">
+                    <strong>Stop Data:</strong>
+                    <pre>${JSON.stringify(testCase.stop, null, 2)}</pre>
+                </div>
+                <div class="result ${result ? 'detected' : 'not-detected'}">
+                    Result: ${result ? '✓ Theatre Detected' : '✗ Not Detected'}
+                    (Expected: ${testCase.expected ? 'Detected' : 'Not Detected'})
+                </div>
+            `;
+            resultsContainer.appendChild(testDiv);
+        });
+
+        // Summary
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'test-case';
+        summaryDiv.style.background = passCount === testCases.length ? '#d1fae5' : '#fef3c7';
+        summaryDiv.innerHTML = `
+            <h2>Test Summary</h2>
+            <p><strong>Total Tests:</strong> ${testCases.length}</p>
+            <p><strong>Passed:</strong> ${passCount}</p>
+            <p><strong>Failed:</strong> ${failCount}</p>
+            <p><strong>Success Rate:</strong> ${((passCount / testCases.length) * 100).toFixed(1)}%</p>
+        `;
+        resultsContainer.insertBefore(summaryDiv, resultsContainer.firstChild);
+
+        console.log('Theatre Detection Tests Complete');
+        console.log(`Passed: ${passCount}/${testCases.length}`);
+        console.log(`Failed: ${failCount}/${testCases.length}`);
+    </script>
+</body>
+</html>

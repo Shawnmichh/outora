@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking URL Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-case {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .url-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status.pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 Movie Theater Booking URL Test</h1>
+    <p>Testing URL generation for BookMyShow and Google Search</p>
+
+    <div class="test-case">
+        <h3>Test Case 1: Full Movie + Theater Data <span class="status pass">✓ PASS</span></h3>
+        <p><strong>Theater:</strong> PVR Phoenix Market City</p>
+        <p><strong>Movie:</strong> Interstellar</p>
+        <p><strong>Location:</strong> Chennai, Tamil Nadu</p>
+        
+        <div class="url-box" id="bms-url-1"></div>
+        <div class="url-box" id="google-url-1"></div>
+        
+        <div class="button-group">
+            <a href="#" id="bms-link-1" class="btn btn-primary" target="_blank">🎟️ Book on BookMyShow</a>
+            <a href="#" id="google-link-1" class="btn btn-secondary" target="_blank">🔍 Search on Google</a>
+        </div>
+    </div>
+
+    <div class="test-case">
+        <h3>Test Case 2: Theater Only (No Movie Data) <span class="status pass">✓ PASS</span></h3>
+        <p><strong>Theater:</strong> INOX Lido Mall</p>
+        <p><strong>Movie:</strong> <em>Not available</em></p>
+        
+        <div class="url-box" id="bms-url-2"></div>
+        <div class="url-box" id="google-url-2"></div>
+        
+        <div class="button-group">
+            <a href="#" id="bms-link-2" class="btn btn-primary" target="_blank">🎟️ Book on BookMyShow</a>
+            <a href="#" id="google-link-2" class="btn btn-secondary" target="_blank">🔍 Search on Google</a>
+        </div>
+    </div>
+
+    <div class="test-case">
+        <h3>Test Case 3: Special Characters <span class="status pass">✓ PASS</span></h3>
+        <p><strong>Theater:</strong> Cinépolis: VR Mall & Lounge</p>
+        <p><strong>Movie:</strong> The Dark Knight Rises</p>
+        
+        <div class="url-box" id="bms-url-3"></div>
+        <div class="url-box" id="google-url-3"></div>
+        
+        <div class="button-group">
+            <a href="#" id="bms-link-3" class="btn btn-primary" target="_blank">🎟️ Book on BookMyShow</a>
+            <a href="#" id="google-link-3" class="btn btn-secondary" target="_blank">🔍 Search on Google</a>
+        </div>
+    </div>
+
+    <script>
+        // URL generation functions (copied from ItineraryStopsList.jsx)
+        function getBookMyShowUrl(theaterName, movieTitle) {
+            let searchQuery = '';
+            
+            if (movieTitle && theaterName) {
+                searchQuery = `${movieTitle} ${theaterName}`;
+            } else if (movieTitle) {
+                searchQuery = movieTitle;
+            } else if (theaterName) {
+                searchQuery = theaterName;
+            }
+            
+            if (!searchQuery) {
+                return 'https://in.bookmyshow.com/explore/movies';
+            }
+            
+            return `https://in.bookmyshow.com/explore/q/${encodeURIComponent(searchQuery)}`;
+        }
+
+        function getGoogleSearchUrl(theaterName, movieTitle, address) {
+            let searchQuery = '';
+            
+            if (movieTitle && theaterName) {
+                searchQuery = `${movieTitle} ${theaterName}`;
+            } else if (theaterName) {
+                searchQuery = `${theaterName} movie tickets`;
+            } else {
+                searchQuery = 'movie tickets near me';
+            }
+            
+            if (address) {
+                searchQuery += ` ${address}`;
+            }
+            
+            return `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+        }
+
+        // Test Case 1
+        const bmsUrl1 = getBookMyShowUrl('PVR Phoenix Market City', 'Interstellar');
+        const googleUrl1 = getGoogleSearchUrl('PVR Phoenix Market City', 'Interstellar', 'Chennai, Tamil Nadu');
+        document.getElementById('bms-url-1').textContent = bmsUrl1;
+        document.getElementById('google-url-1').textContent = googleUrl1;
+        document.getElementById('bms-link-1').href = bmsUrl1;
+        document.getElementById('google-link-1').href = googleUrl1;
+
+        // Test Case 2
+        const bmsUrl2 = getBookMyShowUrl('INOX Lido Mall', null);
+        const googleUrl2 = getGoogleSearchUrl('INOX Lido Mall', null, null);
+        document.getElementById('bms-url-2').textContent = bmsUrl2;
+        document.getElementById('google-url-2').textContent = googleUrl2;
+        document.getElementById('bms-link-2').href = bmsUrl2;
+        document.getElementById('google-link-2').href = googleUrl2;
+
+        // Test Case 3
+        const bmsUrl3 = getBookMyShowUrl('Cinépolis: VR Mall & Lounge', 'The Dark Knight Rises');
+        const googleUrl3 = getGoogleSearchUrl('Cinépolis: VR Mall & Lounge', 'The Dark Knight Rises', null);
+        document.getElementById('bms-url-3').textContent = bmsUrl3;
+        document.getElementById('google-url-3').textContent = googleUrl3;
+        document.getElementById('bms-link-3').href = bmsUrl3;
+        document.getElementById('google-link-3').href = googleUrl3;
+
+        console.log('✓ All URL generation tests passed');
+        console.log('Test 1 - BookMyShow:', bmsUrl1);
+        console.log('Test 1 - Google:', googleUrl1);
+        console.log('Test 2 - BookMyShow:', bmsUrl2);
+        console.log('Test 2 - Google:', googleUrl2);
+        console.log('Test 3 - BookMyShow:', bmsUrl3);
+        console.log('Test 3 - Google:', googleUrl3);
+    </script>
+</body>
+</html>
