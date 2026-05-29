@@ -35,7 +35,7 @@ function HowItWorks() {
           <div className="absolute left-5 top-8 bottom-8 hidden w-px bg-[var(--color-border)] lg:block" aria-hidden="true" />
 
           <ol className="space-y-5">
-            {steps.map((item) => (
+            {steps.map((item, index) => (
               <li
                 key={item.step}
                 className="relative flex items-start gap-6"
@@ -49,6 +49,11 @@ function HowItWorks() {
                 <div className="flex-1 pb-2 pt-1.5">
                   <h3 className="text-base font-bold text-[var(--color-text-primary)]">{item.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">{item.description}</p>
+                </div>
+
+                {/* Faded decorative number — all steps, consistent style */}
+                <div className="hidden shrink-0 pt-2 lg:block" aria-hidden="true">
+                  <span className="text-3xl font-black text-[var(--color-border)] select-none">{item.step}</span>
                 </div>
               </li>
             ))}

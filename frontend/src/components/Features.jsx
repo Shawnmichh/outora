@@ -48,7 +48,7 @@ const features = [
     ),
     title: 'Instant Updates',
     description:
-      'Adjust your plan anytime without starting over.',
+      'Update your plans anytime without losing progress.',
   },
   {
     icon: (
@@ -58,7 +58,7 @@ const features = [
     ),
     title: 'Privacy First',
     description:
-      'Your information stays private and is never sold.',
+      'Your information stays private and secure.',
   },
 ];
 
@@ -129,18 +129,19 @@ function Features() {
               </div>
             </article>
 
-            {/* Also included — inline list, low visual weight */}
+            {/* Also included — stacked layout, clean and readable */}
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-secondary)] px-5 py-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Also included</p>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-3 space-y-3">
                 {supportingFeatures.map((feature) => (
-                  <li key={feature.title} className="flex items-center gap-3 text-sm">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-[var(--color-accent)]">
+                  <li key={feature.title} className="flex items-start gap-3 text-sm">
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded text-[var(--color-accent)]">
                       {feature.icon}
                     </span>
-                    <span className="font-medium text-[var(--color-text-primary)]">{feature.title}</span>
-                    <span className="text-[var(--color-text-muted)]">·</span>
-                    <span className="text-[var(--color-text-secondary)]">{feature.description}</span>
+                    <div>
+                      <p className="font-semibold text-[var(--color-text-primary)]">{feature.title}</p>
+                      <p className="mt-0.5 text-[var(--color-text-secondary)]">{feature.description}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
