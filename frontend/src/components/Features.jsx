@@ -48,7 +48,7 @@ const features = [
     ),
     title: 'Instant Updates',
     description:
-      'Regenerate your plan on the fly without starting over.',
+      'Adjust your plan anytime without starting over.',
   },
   {
     icon: (
@@ -58,7 +58,7 @@ const features = [
     ),
     title: 'Privacy First',
     description:
-      'Your data stays secure. No selling, just better outings.',
+      'Your information stays private and is never sold.',
   },
 ];
 
