@@ -12,7 +12,7 @@ function AvatarPicker({ value, onChange }) {
             Pick your avatar
           </p>
           <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
-            Express yourself — you can change it any time.
+            Express yourself. You can change this any time.
           </p>
         </div>
 

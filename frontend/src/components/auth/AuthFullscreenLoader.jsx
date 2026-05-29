@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 const COPY = [
-  'Preparing your next outing...',
-  'Getting your itinerary tools ready...',
-  'Restoring your saved journeys...',
+  'Getting things ready...',
+  'Loading your itinerary tools...',
+  'Restoring your saved trips...',
 ];
 
 function clampIndex(value, length) {
@@ -43,7 +43,7 @@ function AuthFullscreenLoader({ message, rotate = true }) {
         </h1>
 
         <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-text-secondary)]">
-          One moment — we&apos;re syncing your session and setting things up.
+          Just a moment while we load your session.
         </p>
 
         {/* Soft indicator */}

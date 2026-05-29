@@ -95,7 +95,7 @@ function Features() {
             <div className="mt-5 rounded-lg bg-[var(--color-surface-secondary)] p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">How it helps</p>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                Outora organizes your route, timing, and stop sequence with practical pacing — so you never have to second-guess your day.
+                Outora organizes your route, timing, and stop sequence with practical pacing, so you never have to second-guess your day.
               </p>
             </div>
           </article>
@@ -139,7 +139,7 @@ function Features() {
                       {feature.icon}
                     </span>
                     <span className="font-medium text-[var(--color-text-primary)]">{feature.title}</span>
-                    <span className="text-[var(--color-text-muted)]">—</span>
+                    <span className="text-[var(--color-text-muted)]">·</span>
                     <span className="text-[var(--color-text-secondary)]">{feature.description}</span>
                   </li>
                 ))}

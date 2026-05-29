@@ -41,11 +41,11 @@ function Login() {
     <AppLayout>
       <AuthPanel
         badge="Welcome back"
-        title="Let’s plan something memorable"
-        description="Sign in to pick up right where you left off — saved trips, polished plans, and quick reopens."
+        title="Sign in to your account"
+        description="Access your saved trips and pick up where you left off."
         submitLabel="Login"
         submittingLabel="Signing you in..."
-        loadingHint="Getting your itinerary tools ready..."
+        loadingHint="Loading your trips..."
         footerText="New here?"
         footerLinkLabel="Create an account"
         footerLinkTo={ROUTES.REGISTER}

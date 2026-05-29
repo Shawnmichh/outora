@@ -17,8 +17,8 @@ function About() {
             <span className="text-[var(--color-accent)]">differently</span>
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)] sm:text-lg">
-            Outora is a travel planning platform that transforms how you experience cities — whether
-            you're visiting for the first time or rediscovering home.
+            Outora is a travel planning tool that helps you experience cities with more intention,
+            whether you're visiting for the first time or rediscovering home.
           </p>
         </header>
 
@@ -62,8 +62,8 @@ function About() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                   </svg>
                 ),
-                title: 'Intelligent Planning',
-                description: 'AI-powered itineraries that adapt to your preferences, budget, and available time.',
+                title: 'Itinerary Planning',
+                description: 'Itineraries that adapt to your interests, budget, and available time.',
               },
               {
                 icon: (
@@ -132,7 +132,7 @@ function About() {
               {
                 step: '03',
                 title: 'Get Your Itinerary',
-                description: 'Receive a personalized plan with maps, timing, and curated recommendations.',
+                description: 'Receive a personalized plan with maps, timing, and stop-by-stop guidance.',
               },
             ].map((item) => (
               <li
@@ -159,7 +159,7 @@ function About() {
                 Ready to explore?
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-base text-[var(--color-text-secondary)]">
-                Start planning your next unforgettable outing in minutes.
+                Start planning your next outing in just a few minutes.
               </p>
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link

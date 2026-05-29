@@ -96,7 +96,7 @@ function OnboardingPage({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-bold text-[var(--color-text-primary)]">Preview itinerary</p>
-                <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">Curated from your preferences</p>
+                <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">Based on your preferences</p>
               </div>
               <span className="rounded-md border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] px-2.5 py-1 text-xs font-semibold text-[var(--color-accent)]">
                 Ready

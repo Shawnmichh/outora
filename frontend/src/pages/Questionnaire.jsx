@@ -14,7 +14,7 @@ function Questionnaire() {
           </h1>
 
           <p className="mt-3 text-base leading-relaxed text-[var(--color-text-secondary)]">
-            Answer a few questions and we'll craft a personalized itinerary for you.
+          Answer a few questions and we'll put together an itinerary for your day.
           </p>
         </header>
 

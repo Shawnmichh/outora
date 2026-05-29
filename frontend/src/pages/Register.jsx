@@ -42,11 +42,11 @@ function Register() {
     <AppLayout>
       <AuthPanel
         badge="Create account"
-        title="Your next outing starts here"
-        description="Create a profile to save plans, reopen trips in one tap, and keep your journeys tidy."
+        title="Create your account"
+        description="Save plans, revisit trips, and keep your outings organized."
         submitLabel="Register"
         submittingLabel="Creating your account..."
-        loadingHint="Preparing your profile and saved journeys..."
+        loadingHint="Setting up your account..."
         footerText="Already have an account?"
         footerLinkLabel="Sign in"
         footerLinkTo={ROUTES.LOGIN}
